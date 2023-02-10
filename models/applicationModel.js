@@ -8,8 +8,8 @@ const applicationSchema = new mongoose.Schema(
       required: [true, 'An application must have a name'],
       unique: true,
       maxLength: [
-        40,
-        'An application name must have less or equal than 40 characters'
+        80,
+        'An application name must have less or equal than 80 characters'
       ],
       minLength: [
         10,
@@ -18,6 +18,26 @@ const applicationSchema = new mongoose.Schema(
     },
     slug: String,
     questions: String,
+    startDate: {
+      type: Date,
+      validate: {
+        validator: function(val) {
+          return val >= Date.now();
+        },
+        message:
+          'Start date {{VALUE}} should be greater or equal than current date'
+      }
+    },
+    deadlineDate: {
+      type: Date,
+      validate: {
+        validator: function(val) {
+          return val >= this.startDate;
+        },
+        message:
+          'Deadline date {{VALUE}} should be greater or equal than start date'
+      }
+    },
     users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
   },
   {
@@ -38,3 +58,7 @@ applicationSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+const Application = mongoose.model('Application', applicationSchema);
+
+module.exports = Application;

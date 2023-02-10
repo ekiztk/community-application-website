@@ -1,6 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const applicationRouter = require('./routes/applicationRoutes');
+const globalErrorHandler = require('./controllers/errorController');
+
 const app = express();
 
 // 1) MIDDLEWARES
@@ -18,7 +21,10 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
-// app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/applications', applicationRouter);
 // app.use('/api/v1/users', userRouter);
+
+//Global error handler route
+app.use(globalErrorHandler);
 
 module.exports = app;
