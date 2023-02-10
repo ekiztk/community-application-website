@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
+const userRouter = require('./routes/userRoutes');
 const applicationRouter = require('./routes/applicationRoutes');
 const responseRouter = require('./routes/responseRoutes');
 const accountRouter = require('./routes/accountRoutes');
@@ -18,6 +20,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
+app.use(cookieParser());
+
 //add request time to request
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -25,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
+app.use('/api/v1/users', userRouter);
 app.use('/api/v1/applications', applicationRouter);
 app.use('/api/v1/responses', responseRouter);
 app.use('/api/v1/accounts', accountRouter);
