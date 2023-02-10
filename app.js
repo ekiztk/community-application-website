@@ -2,6 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 
 const applicationRouter = require('./routes/applicationRoutes');
+const responseRouter = require('./routes/responseRoutes');
+const accountRouter = require('./routes/accountRoutes');
+const roleRouter = require('./routes/roleRoutes');
+
 const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
@@ -22,7 +26,9 @@ app.use((req, res, next) => {
 
 // 3) ROUTES
 app.use('/api/v1/applications', applicationRouter);
-// app.use('/api/v1/users', userRouter);
+app.use('/api/v1/responses', responseRouter);
+app.use('/api/v1/accounts', accountRouter);
+app.use('/api/v1/roles', roleRouter);
 
 //Global error handler route
 app.use(globalErrorHandler);

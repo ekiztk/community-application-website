@@ -15,5 +15,3 @@ router
   .delete(applicationController.deleteApplication);
 
 module.exports = router;
-
-//bunun crud işlemleri tamam
