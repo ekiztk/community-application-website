@@ -11,6 +11,11 @@ const responseSchema = new mongoose.Schema(
         message: 'Status is either: pending, rejected, accepted'
       }
     },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      required: [true, 'Response must have a creation date']
+    },
     application: {
       type: mongoose.Schema.ObjectId,
       ref: 'Application',
@@ -19,7 +24,7 @@ const responseSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: [true, 'Response must belong to a user.']
+      required: [true, 'Response must belong to a user']
     }
   },
   {
