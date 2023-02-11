@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const permManager = require('./../utils/permission');
 
 const roleSchema = new mongoose.Schema(
   {
@@ -13,8 +14,18 @@ const roleSchema = new mongoose.Schema(
       maxLength: [40, 'A role label must have less or equal than 40 characters']
     },
     permissions: {
-      type: String,
-      required: [true, 'A role must have at least a permission']
+      type: [String],
+      required: [true, 'A role must have at least a permission'],
+      validate: {
+        validator: function(val) {
+          return permManager.validatePermissions(
+            permManager.getPermissionList,
+            val
+          );
+        },
+        message:
+          'Permissions have at least one permission that does not exist in the permission'
+      }
     }
   },
   {

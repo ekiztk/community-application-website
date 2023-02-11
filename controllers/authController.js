@@ -5,6 +5,7 @@ const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendEmail = require('./../utils/email');
+const permManager = require('./../utils/permission');
 
 //returns signed jwt token
 const signToken = id => {
@@ -122,16 +123,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-//checks if user has the permission(s) to perform action - not done
+//checks if user has the permission(s) to perform action
 exports.restrictTo = (...permissions) => {
   return (req, res, next) => {
-    // roles ['admin', 'lead-guide']. role='user'
-    if (!permissions.includes(req.user.role.permissions)) {
+    if (
+      !permManager.validatePermissions(req.user.role.permissions, permissions)
+    ) {
       return next(
         new AppError('You do not have permission to perform this action', 403)
       );
     }
-
     next();
   };
 };
