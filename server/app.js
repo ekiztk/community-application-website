@@ -6,6 +6,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const path = require('path');
 
 const userRouter = require('./routes/userRoutes');
 const applicationRouter = require('./routes/applicationRoutes');
@@ -17,10 +19,15 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
+// 1) GLOBAL MIDDLEWARES
+
+//Implement CORS
+app.use(cors());
+app.options('*', cors());
+
 // Set security HTTP headers
 app.use(helmet());
 
-// 1) MIDDLEWARES
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -34,11 +41,11 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 app.use(express.json());
-app.use(express.static(`${__dirname}/public`));
+app.use('/assets', express.static(path.join(__dirname, 'public')));
 
 // Body parser, reading data from body into req.body
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
