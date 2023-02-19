@@ -6,7 +6,6 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "state";
-
 //begin form creation system
 
 const registerSchema = yup.object().shape({
