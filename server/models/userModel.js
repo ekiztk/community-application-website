@@ -40,6 +40,14 @@ const userSchema = new mongoose.Schema(
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    isBanned: {
+      type: Boolean,
+      default: false
+    },
+    banExpiresAt: {
+      type: Date,
+      select: false
+    },
     active: {
       type: Boolean,
       default: true,

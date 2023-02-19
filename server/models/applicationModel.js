@@ -8,15 +8,27 @@ const applicationSchema = new mongoose.Schema(
       required: [true, 'An application must have a name'],
       unique: true,
       maxLength: [
-        80,
-        'An application name must have less or equal than 80 characters'
+        50,
+        'An application name must have less or equal than 50 characters'
       ],
       minLength: [
-        10,
-        'An application name must have more or equal than 10 characters'
+        5,
+        'An application name must have more or equal than 5 characters'
       ]
     },
     slug: String,
+    description: {
+      type: String,
+      required: [true, 'An application must have a description'],
+      maxLength: [
+        240,
+        'An application description must have less or equal than 240 characters'
+      ],
+      minLength: [
+        10,
+        'An application description must have more or equal than 10 characters'
+      ]
+    },
     questions: String,
     startDate: {
       type: Date,
@@ -38,7 +50,7 @@ const applicationSchema = new mongoose.Schema(
           'Deadline date {{VALUE}} should be greater or equal than start date'
       }
     },
-    users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
+    executives: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
   },
   {
     toJSON: { virtuals: true },

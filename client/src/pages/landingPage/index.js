@@ -5,12 +5,12 @@ import Values from "./Values";
 import Contact from "./Contact";
 import { Helmet } from "react-helmet";
 
-const Home = () => {
+const Landing = () => {
   return (
     <div className="top-16 relative">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Home</title>
+        <title>Community Name</title>
       </Helmet>
       <Hero />
       <About />
@@ -25,4 +25,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Landing;

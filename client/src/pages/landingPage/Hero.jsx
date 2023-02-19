@@ -8,7 +8,7 @@ const Hero = () => {
       <section className="h-96 lg:h-128 relative">
         <img
           src={heroImage}
-          alt="Main"
+          alt="Hero"
           className="h-full w-full object-cover"
         />
 

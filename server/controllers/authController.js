@@ -125,16 +125,19 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 //checks if user has the permission(s) to perform action
 exports.restrictTo = (...permissions) => {
-  return (req, res, next) => {
+  return catchAsync(async (req, res, next) => {
     if (
-      !permManager.validatePermissions(req.user.role.permissions, permissions)
+      (await permManager.validatePermissions(
+        req.user.role.permissions,
+        permissions
+      )) === false
     ) {
       return next(
         new AppError('You do not have permission to perform this action', 403)
       );
     }
     next();
-  };
+  });
 };
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
