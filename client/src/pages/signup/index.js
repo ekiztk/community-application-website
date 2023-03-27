@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { setLogin } from "store";
 //begin form creation system
 
 const registerSchema = yup.object().shape({
@@ -28,7 +28,7 @@ const Signup = () => {
 
   const register = async (values, onSubmitProps) => {
     const savedUserResponse = await fetch(
-      "http://localhost:3080/api/v1/users/signup",
+      `${process.env.REACT_APP_API_URL}/users/signup`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

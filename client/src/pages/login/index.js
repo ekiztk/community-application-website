@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { setLogin } from "store";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("Invalid Email!").required("Email is required!"),
@@ -24,7 +24,7 @@ const Login = () => {
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch(
-      "http://localhost:3080/api/v1/users/login",
+      `${process.env.REACT_APP_API_URL}/users/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

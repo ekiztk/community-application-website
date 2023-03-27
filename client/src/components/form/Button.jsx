@@ -8,12 +8,21 @@ const BUTTON_STYLES = {
   warning: "bg-yellow",
 };
 
-const Button = ({ type, style, text, className, onChange, onBlur }) => {
+const Button = ({
+  type,
+  style,
+  text,
+  className,
+  onChange,
+  onBlur,
+  onClick,
+}) => {
   return (
     <button
       type={type || "button"}
-      onChange={onChange}
-      onBlur={onBlur}
+      onChange={onChange || null}
+      onBlur={onBlur || null}
+      onClick={onClick || null}
       className={`${className || ""} inline-block px-6 py-2.5 ${
         BUTTON_STYLES[style]
       }-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:${

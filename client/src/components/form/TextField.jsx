@@ -14,7 +14,7 @@ const TextField = ({
     <div className="mb-3 xl:w-96">
       <label
         htmlFor={id}
-        className="form-label inline-block mb-2 text-gray-700"
+        className="form-label inline-block mb-2 text-gray-700 text-center w-full"
       >
         {label || ""}
       </label>

@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { mainLogo, profileImage } from "../assets/img";
-import { useSelector } from "react-redux";
-import { setLogout } from "state";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setLogout } from "store";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const user = useSelector((state) => state.auth.user);
+  const isAuth = Boolean(useSelector((state) => state.auth.token));
 
   //logged in yapmada kaldık
   const isLoggedIn = () => {

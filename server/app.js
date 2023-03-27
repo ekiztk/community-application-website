@@ -16,6 +16,7 @@ const responseRouter = require('./routes/responseRoutes');
 const accountRouter = require('./routes/accountRoutes');
 const roleRouter = require('./routes/roleRoutes');
 
+const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
@@ -84,7 +85,11 @@ app.use('/api/v1/responses', responseRouter);
 app.use('/api/v1/accounts', accountRouter);
 app.use('/api/v1/roles', roleRouter);
 
-//Global error handler route
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+//Global error handler route - not working fine
 app.use(globalErrorHandler);
 
 module.exports = app;

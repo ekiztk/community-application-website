@@ -29,7 +29,10 @@ const applicationSchema = new mongoose.Schema(
         'An application description must have more or equal than 10 characters'
       ]
     },
-    questions: String,
+    questions: {
+      type: Array,
+      default: []
+    },
     startDate: {
       type: Date,
       validate: {
@@ -41,14 +44,14 @@ const applicationSchema = new mongoose.Schema(
       }
     },
     deadlineDate: {
-      type: Date,
-      validate: {
-        validator: function(val) {
-          return val >= this.startDate;
-        },
-        message:
-          'Deadline date {{VALUE}} should be greater or equal than start date'
-      }
+      type: Date
+      // validate: {
+      //   validator: function(val) {
+      //     return Date.parse(val) >= Date.parse(this.startDate);
+      //   },
+      //   message:
+      //     'Deadline date {{VALUE}} should be greater or equal than start date'
+      // }
     },
     executives: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
   },

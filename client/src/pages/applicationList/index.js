@@ -3,8 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import useFetch from "../../utils/hooks/useFetch";
 import { MdDateRange } from "react-icons/md";
+import Navbar from "components/Navbar";
 //pagination needed
-
 const Applications = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, loading, error, reFetch } = useFetch(
@@ -17,11 +17,12 @@ const Applications = () => {
         <meta charSet="utf-8" />
         <title>Applications</title>
       </Helmet>
+      <Navbar />
       <div className="top-16 relative p-4 md:p-8">
         <h1 className="text-4xl text-center lg:text-6xl text-black">
           Applications
         </h1>
-        <div className="p-4 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
+        <div className="p-4 md:p-16 grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-8">
           {loading && <h1>Loading..</h1>}
           {error && <h1>error</h1>}
           {

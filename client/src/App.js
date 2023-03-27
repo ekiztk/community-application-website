@@ -1,24 +1,26 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Navbar from "components/Navbar";
-import Applications from "pages/applicationsPage";
-import Login from "pages/loginPage";
-import Signup from "pages/signupPage";
-import Landing from "pages/landingPage";
+import { useModals } from "utils/hooks/modal";
+import Applications from "pages/applicationList";
+import Login from "pages/login";
+import Signup from "pages/signup";
+import Landing from "pages/landing";
+import ApplicationEdit from "pages/applicationEdit";
+import Modal from "modals";
+import ApplicationApply from "pages/applicationApply";
 
 function App() {
-  const mode = useSelector((state) => state.mode);
-  const isAuth = Boolean(useSelector((state) => state.token));
-
+  const modals = useModals();
   return (
     <>
       <BrowserRouter>
-        <Navbar />
+        {modals.length > 0 && <Modal />}
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/applications" element={<Applications />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/applications" element={<Applications />} />
+          <Route path="/applications/:slug" element={<ApplicationApply />} />
+          <Route path="/applications/:id/edit" element={<ApplicationEdit />} />
         </Routes>
       </BrowserRouter>
     </>
