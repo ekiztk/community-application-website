@@ -1,41 +1,60 @@
-import React from "react";
+import className from "classnames";
+import { GoSync } from "react-icons/go";
 
-const BUTTON_STYLES = {
-  primary: "bg-blue",
-  secondary: "bg-purple",
-  success: "bg-green",
-  danger: "bg-red",
-  warning: "bg-yellow",
-};
+function Button({
+  children,
+  primary,
+  secondary,
+  success,
+  warning,
+  danger,
+  outline,
+  rounded,
+  loading,
+  ...rest
+}) {
+  const classes = className(
+    rest.className,
+    "inline-block flex items-center border h-8 px-3 py-1 ",
+    {
+      "opacity-80": loading,
+      "border-blue-500 bg-blue-500 text-white": primary,
+      "border-gray-900 bg-gray-900 text-white": secondary,
+      "border-green-500 bg-green-500 text-white": success,
+      "border-yellow-400 bg-yellow-400 text-white": warning,
+      "border-red-500 bg-red-500 text-white": danger,
+      "rounded-md": rounded,
+      "bg-white": outline,
+      "text-blue-500": outline && primary,
+      "text-gray-900": outline && secondary,
+      "text-green-500": outline && success,
+      "text-yellow-400": outline && warning,
+      "text-red-500": outline && danger,
+    }
+  );
 
-const Button = ({
-  type,
-  style,
-  text,
-  className,
-  onChange,
-  onBlur,
-  onClick,
-}) => {
   return (
-    <button
-      type={type || "button"}
-      onChange={onChange || null}
-      onBlur={onBlur || null}
-      onClick={onClick || null}
-      className={`${className || ""} inline-block px-6 py-2.5 ${
-        BUTTON_STYLES[style]
-      }-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:${
-        BUTTON_STYLES[style]
-      }-700 hover:shadow-lg focus:${
-        BUTTON_STYLES[style]
-      }-700 focus:shadow-lg focus:outline-none focus:ring-0 active:${
-        BUTTON_STYLES[style]
-      }-800 active:shadow-lg transition duration-150 ease-in-out`}
-    >
-      {text || ""}
+    <button {...rest} disabled={loading} className={classes}>
+      {loading ? <GoSync className="animate-spin" /> : children}
     </button>
   );
+}
+
+Button.propTypes = {
+  checkVariationValue: ({ primary, secondary, success, warning, danger }) => {
+    const count =
+      Number(!!primary) +
+      Number(!!secondary) +
+      Number(!!warning) +
+      Number(!!success) +
+      Number(!!danger);
+
+    if (count > 1) {
+      return new Error(
+        "Only one of primary, secondary, success, warning, danger can be true"
+      );
+    }
+  },
 };
 
 export default Button;

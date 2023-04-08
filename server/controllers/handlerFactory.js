@@ -61,7 +61,7 @@ exports.getOne = (Model, populateOptions) =>
     res.status(200).json({
       status: 'success',
       data: {
-        data: doc
+        data: doc.toObject()
       }
     });
   });

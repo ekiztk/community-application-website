@@ -42,7 +42,7 @@ const QuestionBox = ({ qIndex, editable }) => {
 
   const returnQuestionType = (type) => {
     if (type === "singleLineText" || type === "multiLineText") {
-      return <TextQuestion isEditing={isEditing} type={type} />;
+      return <TextQuestion isEditing={isEditing} qIndex={qIndex} type={type} />;
     }
     if (type === "multipleChoice") {
       return <MultipleChoiceQuestion isEditing={isEditing} qIndex={qIndex} />;
@@ -50,7 +50,7 @@ const QuestionBox = ({ qIndex, editable }) => {
   };
 
   const handleClickOutside = (e) => {
-    if (!myRef.current.contains(e.target)) {
+    if (editable && !myRef.current.contains(e.target)) {
       setIsEditing(false);
     }
   };

@@ -10,7 +10,6 @@ const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
   const isAuth = Boolean(useSelector((state) => state.auth.token));
 
-  //logged in yapmada kaldık
   const isLoggedIn = () => {
     if (user && isAuth) {
       return (
@@ -48,10 +47,10 @@ const Navbar = () => {
     }
     return (
       <>
-        <Link to="/login">Login</Link>
+        <Link to="/auth/login">Login</Link>
         <Link
-          to="/signup"
-          className="bg-green-600 px-3 py-1 hover:bg-green-500 text-white  cursor-pointer transition duration-500 whitespace-nowrap"
+          to="/auth/signup"
+          className="bg-green-600 px-3 py-1 hover:bg-green-500 text-white cursor-pointer transition duration-500 whitespace-nowrap"
         >
           SIGN UP
         </Link>
@@ -60,8 +59,8 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed bg-white shadow-md w-full top-0 left-0 z-10 uppercase max-h-16">
-      <div className="container flex items-center justify-between space-x-8 lg:space-x-16">
+    <header className="fixed bg-white shadow-md w-full top-0 left-0 z-10 uppercase px-2 md:px-4 max-h-16">
+      <div className="flex items-center justify-between space-x-4 lg:space-x-8">
         <Link to="/">
           <img
             className="pl-4 md:pl-0 object-contain max-h-16"

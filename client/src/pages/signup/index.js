@@ -1,10 +1,10 @@
 import { TextField, Button } from "components/form";
-import React from "react";
+import React, { useEffect } from "react";
 import { mainLogo } from "../../assets/img";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "store";
 //begin form creation system
 
@@ -25,6 +25,9 @@ const initialValuesRegister = {
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.auth.user);
+  const isAuth = Boolean(useSelector((state) => state.auth.token));
 
   const register = async (values, onSubmitProps) => {
     const savedUserResponse = await fetch(
@@ -53,15 +56,21 @@ const Signup = () => {
     await register(values, onSubmitProps);
   };
 
+  useEffect(() => {
+    if (user && isAuth) {
+      return navigate("/");
+    }
+  }, [user, isAuth, navigate]);
+
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center">
-      <div className="p-4 md:p-8 min-w-[50vh] flex flex-col items-center justify-center">
+      <div className="p-4 md:p-8 min-w-[80vh] md:min-w-[50vh] flex flex-col items-center justify-center">
         <img
           className="text-4xl lg:text-6xl object-contain max-h-16"
           src={mainLogo}
           alt="logo"
         />
-        <h3 className="mb-4">Welcome!</h3>
+        <h3 className="mb-4 md:mb-8">Welcome!</h3>
 
         <Formik
           onSubmit={handleFormSubmit}
@@ -134,15 +143,21 @@ const Signup = () => {
                 )}
               </Dropzone> */}
 
-              <Button
-                type="submit"
-                style="success"
-                className="w-full"
-                text="Log In"
-              />
+              <Button type="submit" success className="mx-auto text-center">
+                Register
+              </Button>
             </form>
           )}
         </Formik>
+        <p className="text-sm font-semibold mt-4 pt-1 mb-0">
+          {"Have an account? "}
+          <Link
+            to="/auth/login"
+            className="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
+          >
+            Log In
+          </Link>
+        </p>
       </div>
     </div>
   );

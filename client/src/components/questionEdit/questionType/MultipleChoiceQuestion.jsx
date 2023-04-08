@@ -1,7 +1,7 @@
 import React from "react";
 import { RxCross2, RxPlus } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { changeQuestionOptions } from "../../../store";
+import { changeQuestionOptions, setAnswer } from "../../../store";
 
 const MultipleChoiceQuestion = ({ qIndex, isEditing }) => {
   const dispatch = useDispatch();
@@ -34,6 +34,10 @@ const MultipleChoiceQuestion = ({ qIndex, isEditing }) => {
     arr[index] = e.target.value;
     dispatch(changeQuestionOptions({ index: qIndex, options: [...arr] }));
   }
+
+  function handleSaveAnswer(e) {
+    dispatch(setAnswer({ index: qIndex, answer: e.target.value }));
+  }
   //console.log(options);
 
   const addRadioOption = () => {
@@ -53,7 +57,7 @@ const MultipleChoiceQuestion = ({ qIndex, isEditing }) => {
     );
   };
 
-  //answer'ı göndermeyi yapmadık
+  //answer'ı kaydediyor
   if (!isEditing) {
     return (
       <div className="flex flex-col gap-x-2 gap-y-2 justify-start items-start max-w-[80%]">
@@ -68,6 +72,8 @@ const MultipleChoiceQuestion = ({ qIndex, isEditing }) => {
                   name={`o-for-${qIndex}`}
                   type="radio"
                   className="w-4 h-4 inline"
+                  value={option}
+                  onChange={handleSaveAnswer}
                 />
                 <label htmlFor={`o-${qIndex}-${index}`}>{option}</label>
               </div>

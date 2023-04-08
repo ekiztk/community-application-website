@@ -61,6 +61,8 @@ const applicationSchema = new mongoose.Schema(
   }
 );
 
+applicationSchema.index({ slug: 1 });
+
 //Virtual populate to get relevant responses
 applicationSchema.virtual('responses', {
   ref: 'Response',

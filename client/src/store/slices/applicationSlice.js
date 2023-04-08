@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchApplication } from "store/thunks/fetchApplication";
+import { removeApplication } from "store/thunks/removeApplication";
 
 const initialState = {
   data: {
@@ -25,8 +26,8 @@ const applicationSlice = createSlice({
       state.data.slug = action.payload.slug;
       state.data.description = action.payload.description;
       state.data.questions = [...action.payload.questions] || [];
-      state.data.startDate = action.payload.startDate;
-      state.data.deadlineDate = action.payload.deadlineDate;
+      state.data.startDate = new Date(action.payload.startDate);
+      state.data.deadlineDate = new Date(action.payload.deadlineDate);
     },
     changeName: (state, action) => {
       state.data.name = action.payload;
@@ -82,6 +83,9 @@ const applicationSlice = createSlice({
       state.data.questions[action.payload.index].required =
         action.payload.required;
     },
+    setAnswer: (state, action) => {
+      state.data.questions[action.payload.index].answer = action.payload.answer;
+    },
   },
   extraReducers: (builder) => {
     //fetching
@@ -94,6 +98,20 @@ const applicationSlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchApplication.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+
+    //removing
+    builder.addCase(removeApplication.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(removeApplication.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = { ...initialState };
+      state.error = null;
+    });
+    builder.addCase(removeApplication.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
@@ -114,5 +132,6 @@ export const {
   changeDescription,
   changeStartDate,
   changeDeadlineDate,
+  setAnswer,
 } = applicationSlice.actions;
 export const applicationReducer = applicationSlice.reducer;

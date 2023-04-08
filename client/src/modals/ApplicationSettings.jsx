@@ -1,11 +1,20 @@
 import axios from "axios";
 import { TextField, DatePicker, Button } from "components/form";
 import Header from "components/modal/Header";
+import moment from "moment/moment";
 import React, { useState } from "react";
+import { GoTrashcan } from "react-icons/go";
 import { useSelector, useDispatch } from "react-redux";
-import { changeDeadlineDate, changeStartDate, changeName } from "store";
+import { useNavigate } from "react-router-dom";
+import {
+  changeDeadlineDate,
+  changeStartDate,
+  changeName,
+  removeApplication,
+} from "store";
 
-//date pcikerlar tarih göstermiyor düzeltmede kaldık
+//datepicker çalışmıyor
+
 const ApplicationSettings = ({ data, close }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingError, setUpdatingError] = useState(null);
@@ -14,8 +23,12 @@ const ApplicationSettings = ({ data, close }) => {
   const [startDate, setStartDate] = useState(data.startDate || "");
   const [deadlineDate, setDeadlineDate] = useState(data.deadlineDate || "");
 
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [removingError, setRemovingError] = useState(null);
+
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUpdateApplication = () => {
     setIsUpdating(true);
@@ -36,6 +49,22 @@ const ApplicationSettings = ({ data, close }) => {
       .finally(() => setIsUpdating(false));
   };
 
+  const handleDeleteApplication = () => {
+    dispatch(removeApplication({ id: data.id, token: token }))
+      .unwrap()
+      .then(() => {
+        alert("removed");
+        close();
+        navigate("/applications/edit");
+      })
+      .catch((err) => setRemovingError(err))
+      .finally(() => {
+        setIsRemoving(false);
+      });
+  };
+
+  console.log(moment(startDate).format("MM.DD.YYYY"));
+
   return (
     <>
       <Header title="Settings" />
@@ -52,8 +81,8 @@ const ApplicationSettings = ({ data, close }) => {
           label="Start Date"
           id="startDate"
           name="startDate"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
+          value={moment(startDate).format("DD.MM.YYYY")}
+          onChange={(e) => setStartDate(moment(startDate).format("MM.DD.YYYY"))}
         />
         <DatePicker
           label="Deadline Date"
@@ -62,7 +91,23 @@ const ApplicationSettings = ({ data, close }) => {
           value={deadlineDate}
           onChange={(e) => setDeadlineDate(e.target.value)}
         />
-        <Button onClick={handleUpdateApplication} style="success" text="Save" />
+        <div className="flex flex-col border-gray-500 border-solid border-2 p-2 my-2">
+          <p>
+            Please write down the name of the application to delete it
+            permamently.
+          </p>
+          <Button
+            loading={isRemoving}
+            onClick={handleDeleteApplication}
+            danger
+            className="h-12 w-12 mx-auto p-3 rounded-sm"
+          >
+            <GoTrashcan className="w-8 h-8" />
+          </Button>
+        </div>
+        <Button loading={isUpdating} onClick={handleUpdateApplication} success>
+          Update
+        </Button>
       </div>
     </>
   );

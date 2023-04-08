@@ -11,7 +11,7 @@ const fetchApplication = createAsyncThunk(
           : `${process.env.REACT_APP_API_URL}/applications?slug=${slug}`
       );
       await pause(1000); //DEV ONLY!
-      console.log(response.data.data.data);
+      //console.log(response.data.data.data);
       return slug === false
         ? response.data.data.data
         : response.data.data.data[0];
@@ -26,7 +26,7 @@ const fetchApplication = createAsyncThunk(
 // fetchApplication.rejected
 
 //DEV ONLY!!
-//yüklemeyi yavaşlatacak
+//slows the speed of loading down
 const pause = (duration) => {
   return new Promise((resolve) => {
     setTimeout(resolve, duration);

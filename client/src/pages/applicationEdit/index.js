@@ -13,10 +13,12 @@ import { fetchApplication } from "../../store";
 import { createModal, destroyAllModal } from "utils/hooks/modal";
 import Loading from "components/Loading";
 import axios from "axios";
+import { useThunk } from "utils/hooks/useThunk";
+import { Button } from "components/form";
 
 const ApplicationEdit = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState(null);
+  const [doFetchApplication, isLoading, loadingError] =
+    useThunk(fetchApplication);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingError, setUpdatingError] = useState(null);
 
@@ -27,14 +29,8 @@ const ApplicationEdit = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchApplication({ id }))
-      .unwrap()
-      .catch((err) => setLoadingError(err))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [dispatch, id]);
+    doFetchApplication({ id });
+  }, [doFetchApplication, id]);
 
   //update oldu şimdi sıra modal ile update etmekte
   const handleUpdateApplication = () => {
@@ -60,7 +56,7 @@ const ApplicationEdit = () => {
   return (
     <header className="bg-gray-200 w-full min-h-[100vh]">
       <div className="bg-white h-16 flex items-center p-2 md:p-4">
-        <Link to="/panel/applications">
+        <Link to="/applications/edit">
           <MdOutlineApps className="h-12 w-12 cursor-pointer" />
         </Link>
         <h2>{application.name.toUpperCase()}</h2>
@@ -76,16 +72,19 @@ const ApplicationEdit = () => {
               });
             }}
           />
-          {isUpdating ? (
-            "Updating..."
-          ) : (
-            <MdSave
-              onClick={handleUpdateApplication}
-              className="h-8 w-8 cursor-pointer"
-            />
-          )}
+          <Button
+            primary
+            rounded
+            onClick={handleUpdateApplication}
+            loading={isUpdating}
+            className="px-1.5 h-8"
+          >
+            <MdSave className="h-8 w-8" />
+          </Button>
           {updatingError && "Error updating."}
-          <MdRemoveRedEye className="h-8 w-8 cursor-pointer" />
+          <Link to={`/applications/${application?.slug}`}>
+            <MdRemoveRedEye className="h-8 w-8 cursor-pointer" />
+          </Link>
         </div>
       </div>
       <BoxContainer editable />

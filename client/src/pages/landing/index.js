@@ -9,7 +9,7 @@ const Landing = () => {
   return (
     <>
       <Navbar />
-      <div className="top-16 relative">
+      <div className="bg-bg-light dark:bg-black top-16 relative">
         <Helmet>
           <meta charSet="utf-8" />
           <title>Community Name</title>

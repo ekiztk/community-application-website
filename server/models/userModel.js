@@ -65,9 +65,14 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-//Virtual populate to get relevant accounts
+//Virtual populating
 userSchema.virtual('accounts', {
   ref: 'Account',
+  foreignField: 'user',
+  localField: '_id'
+});
+userSchema.virtual('responses', {
+  ref: 'Response',
   foreignField: 'user',
   localField: '_id'
 });

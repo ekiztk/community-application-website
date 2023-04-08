@@ -29,6 +29,7 @@ import {
   changeDescription,
   changeDeadlineDate,
   changeStartDate,
+  setAnswer,
 } from "./slices/applicationSlice";
 
 import { authReducer, setMode, setLogin, setLogout } from "./slices/authSlice";
@@ -84,8 +85,10 @@ export {
   destroyAll,
   changeDeadlineDate,
   changeStartDate,
+  setAnswer,
 };
 
 export * from "./thunks/fetchApplication";
+export * from "./thunks/removeApplication";
 
 export const persistor = persistStore(store);

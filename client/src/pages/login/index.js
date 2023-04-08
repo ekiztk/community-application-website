@@ -5,8 +5,9 @@ import { mainLogo } from "../../assets/img";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "store";
+import { useEffect } from "react";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("Invalid Email!").required("Email is required!"),
@@ -21,6 +22,9 @@ const initialValuesLogin = {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.auth.user);
+  const isAuth = Boolean(useSelector((state) => state.auth.token));
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch(
@@ -40,6 +44,7 @@ const Login = () => {
           token: loggedIn.token,
         })
       );
+      console.log(loggedIn.data.user);
       navigate("/");
     }
   };
@@ -47,6 +52,12 @@ const Login = () => {
   const handleFormSubmit = async (values, onSubmitProps) => {
     await login(values, onSubmitProps);
   };
+
+  useEffect(() => {
+    if (user && isAuth) {
+      return navigate("/");
+    }
+  }, [user, isAuth, navigate]);
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center">
@@ -56,7 +67,7 @@ const Login = () => {
           src={mainLogo}
           alt="logo"
         />
-        <h3 className="mb-4">Welcome back!</h3>
+        <h3 className="mb-4 md:mb-8">Welcome back!</h3>
 
         <Formik
           onSubmit={handleFormSubmit}
@@ -98,19 +109,16 @@ const Login = () => {
               >
                 Forgot password?
               </Link>
-              <Button
-                type="submit"
-                style="success"
-                className="w-full"
-                text="Log In"
-              />
+              <Button type="submit" primary className="mx-auto text-center">
+                Log In
+              </Button>
             </form>
           )}
         </Formik>
         <p className="text-sm font-semibold mt-4 pt-1 mb-0">
           {"Don't have an account? "}
           <Link
-            href="#!"
+            to="/auth/signup"
             className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
           >
             Register

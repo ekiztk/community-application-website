@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 const responseSchema = new mongoose.Schema(
   {
-    answers: String,
+    answers: [],
     status: {
       type: String,
       required: [true, 'A response must have a status'],
       enum: {
         values: ['pending', 'rejected', 'accepted'],
         message: 'Status is either: pending, rejected, accepted'
-      }
+      },
+      default: 'pending'
     },
     createdAt: {
       type: Date,
@@ -32,6 +33,8 @@ const responseSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+
+responseSchema.index({ application: 1, user: 1, status: 1 }, { unique: true });
 
 const Response = mongoose.model('Response', responseSchema);
 
