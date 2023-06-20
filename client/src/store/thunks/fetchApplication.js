@@ -7,8 +7,8 @@ const fetchApplication = createAsyncThunk(
     try {
       const response = await axios.get(
         slug === false
-          ? `${process.env.REACT_APP_API_URL}/applications/${id}`
-          : `${process.env.REACT_APP_API_URL}/applications?slug=${slug}`
+          ? `${import.meta.env.VITE_API_URL}/applications/${id}`
+          : `${import.meta.env.VITE_API_URL}/applications?slug=${slug}`
       );
       await pause(1000); //DEV ONLY!
       //console.log(response.data.data.data);

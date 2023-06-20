@@ -5,13 +5,11 @@ const removeApplication = createAsyncThunk(
   "application/remove",
   async ({ id, token }, { rejectWithValue }) => {
     try {
-      console.log(id);
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/applications/${id}`,
+        `${import.meta.env.VITE_API_URL}/applications/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      //fix
       return {};
     } catch (err) {
       return rejectWithValue(err.response.data);

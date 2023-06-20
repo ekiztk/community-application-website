@@ -1,7 +1,5 @@
 const Application = require('./../models/applicationModel');
-//const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
-//const AppError = require('./../utils/appError');
 
 exports.getAllApplications = factory.getAll(Application);
 exports.getApplication = factory.getOne(Application); //exports.getApplication = factory.getOne(Application, { path: 'responses' });

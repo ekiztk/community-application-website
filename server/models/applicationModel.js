@@ -53,6 +53,10 @@ const applicationSchema = new mongoose.Schema(
       //     'Deadline date {{VALUE}} should be greater or equal than start date'
       // }
     },
+    pendingResponsesQuantity: {
+      type: Number,
+      default: 0
+    },
     executives: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
   },
   {
@@ -72,6 +76,11 @@ applicationSchema.virtual('responses', {
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 applicationSchema.pre('save', function(next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+applicationSchema.pre('findByIdAndUpdate', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });

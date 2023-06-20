@@ -1,23 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchApplication } from "store/thunks/fetchApplication";
-import { removeApplication } from "store/thunks/removeApplication";
+import { createApplication } from 'store/thunks/createApplication';
+import { fetchApplication } from 'store/thunks/fetchApplication';
+import { removeApplication } from 'store/thunks/removeApplication';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   data: {
-    id: "",
-    name: "",
-    slug: "",
+    id: '',
+    name: '',
+    slug: '',
     questions: [],
-    startDate: "",
-    description: "",
-    deadlineDate: "",
+    startDate: '',
+    description: '',
+    deadlineDate: '',
+    pendingResponsesQuantity: 0,
   },
   isLoading: false,
   error: null,
 };
 
 const applicationSlice = createSlice({
-  name: "application",
+  name: 'application',
   initialState,
   reducers: {
     setApplication: (state, action) => {
@@ -26,20 +28,13 @@ const applicationSlice = createSlice({
       state.data.slug = action.payload.slug;
       state.data.description = action.payload.description;
       state.data.questions = [...action.payload.questions] || [];
-      state.data.startDate = new Date(action.payload.startDate);
-      state.data.deadlineDate = new Date(action.payload.deadlineDate);
+      state.data.startDate = action.payload.startDate;
+      state.data.deadlineDate = action.payload.deadlineDate;
+      state.data.pendingResponsesQuantity =
+        action.payload.pendingResponsesQuantity;
     },
-    changeName: (state, action) => {
-      state.data.name = action.payload;
-    },
-    changeStartDate: (state, action) => {
-      state.data.startDate = action.payload;
-    },
-    changeDeadlineDate: (state, action) => {
-      state.data.deadlineDate = action.payload;
-    },
-    changeDescription: (state, action) => {
-      state.data.description = action.payload;
+    updateApplication: (state, action) => {
+      state.data = { ...state.data, ...action.payload };
     },
     addQuestion: (state, action) => {
       state.data.questions.push({ ...action.payload });
@@ -63,12 +58,12 @@ const applicationSlice = createSlice({
         state.data.questions[action.payload.index].type !== action.payload.type
       ) {
         state.data.questions[action.payload.index].type = action.payload.type;
-        if (action.payload.type.endsWith("Text")) {
+        if (action.payload.type.endsWith('Text')) {
           const obj = state.data.questions[action.payload.index];
           delete obj.options;
           state.data.questions[action.payload.index] = { ...obj };
         } else {
-          state.data.questions[action.payload.index].options = [""];
+          state.data.questions[action.payload.index].options = [''];
         }
       }
     },
@@ -83,12 +78,13 @@ const applicationSlice = createSlice({
       state.data.questions[action.payload.index].required =
         action.payload.required;
     },
-    setAnswer: (state, action) => {
+    setQuestionAnswer: (state, action) => {
       state.data.questions[action.payload.index].answer = action.payload.answer;
     },
   },
   extraReducers: (builder) => {
     //fetching
+    // eslint-disable-next-line no-unused-vars
     builder.addCase(fetchApplication.pending, (state, action) => {
       state.isLoading = true;
     });
@@ -99,13 +95,31 @@ const applicationSlice = createSlice({
     });
     builder.addCase(fetchApplication.rejected, (state, action) => {
       state.isLoading = false;
+      state.data = { ...initialState };
+      state.error = action.payload;
+    });
+
+    //creating
+    // eslint-disable-next-line no-unused-vars
+    builder.addCase(createApplication.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createApplication.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+      state.error = null;
+    });
+    builder.addCase(createApplication.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
 
     //removing
+    // eslint-disable-next-line no-unused-vars
     builder.addCase(removeApplication.pending, (state, action) => {
       state.isLoading = true;
     });
+    // eslint-disable-next-line no-unused-vars
     builder.addCase(removeApplication.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = { ...initialState };
@@ -120,7 +134,7 @@ const applicationSlice = createSlice({
 
 export const {
   setApplication,
-  changeName,
+  updateApplication,
   addQuestion,
   updateQuestion,
   deleteQuestion,
@@ -129,9 +143,6 @@ export const {
   changeQuestionOptions,
   setQuestionActive,
   setQuestionRequired,
-  changeDescription,
-  changeStartDate,
-  changeDeadlineDate,
-  setAnswer,
+  setQuestionAnswer,
 } = applicationSlice.actions;
 export const applicationReducer = applicationSlice.reducer;

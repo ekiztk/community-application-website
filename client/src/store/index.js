@@ -1,6 +1,6 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { composeWithDevTools } from "redux-devtools-extension";
-import storage from "redux-persist/lib/storage";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { composeWithDevTools } from '@redux-devtools/extension';
+import storage from 'redux-persist/lib/storage';
 import {
   persistReducer,
   persistStore,
@@ -10,14 +10,13 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist";
-
-import storageSession from "redux-persist/lib/storage/session";
+} from 'redux-persist';
+import storageSession from 'redux-persist/lib/storage/session';
 
 import {
   applicationReducer,
+  updateApplication,
   setApplication,
-  changeName,
   addQuestion,
   updateQuestion,
   deleteQuestion,
@@ -26,22 +25,19 @@ import {
   changeQuestionOptions,
   setQuestionActive,
   setQuestionRequired,
-  changeDescription,
-  changeDeadlineDate,
-  changeStartDate,
-  setAnswer,
-} from "./slices/applicationSlice";
+  setQuestionAnswer,
+} from './slices/applicationSlice';
 
-import { authReducer, setMode, setLogin, setLogout } from "./slices/authSlice";
-import { modalReducer, append, destroy, destroyAll } from "./slices/modalSlice";
+import { authReducer, setMode, setLogin, setLogout } from './slices/authSlice';
+import { modalReducer, append, destroy, destroyAll } from './slices/modalSlice';
 
 const rootPersistConfig = {
-  key: "root",
-  storage: storageSession,
+  key: 'root',
+  storage: storage,
 };
 
 const applicationPersistConfig = {
-  key: "application",
+  key: 'application',
   storage: storageSession,
 };
 
@@ -55,19 +51,19 @@ const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  composeWithDevTools,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+  composeWithDevTools,
 });
 
 export {
   store,
   setApplication,
-  changeName,
+  updateApplication,
   addQuestion,
   updateQuestion,
   deleteQuestion,
@@ -79,16 +75,14 @@ export {
   changeQuestionOptions,
   setQuestionActive,
   setQuestionRequired,
-  changeDescription,
   append,
   destroy,
   destroyAll,
-  changeDeadlineDate,
-  changeStartDate,
-  setAnswer,
+  setQuestionAnswer,
 };
 
-export * from "./thunks/fetchApplication";
-export * from "./thunks/removeApplication";
+export * from './thunks/fetchApplication';
+export * from './thunks/removeApplication';
+export * from './thunks/createApplication';
 
 export const persistor = persistStore(store);
