@@ -1,8 +1,8 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const fetchApplication = createAsyncThunk(
-  "application/fetch",
+  'application/fetch',
   async ({ id = false, slug = false }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
@@ -11,7 +11,6 @@ const fetchApplication = createAsyncThunk(
           : `${import.meta.env.VITE_API_URL}/applications?slug=${slug}`
       );
       await pause(1000); //DEV ONLY!
-      //console.log(response.data.data.data);
       return slug === false
         ? response.data.data.data
         : response.data.data.data[0];

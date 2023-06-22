@@ -37,49 +37,85 @@ const applicationSlice = createSlice({
       state.data = { ...state.data, ...action.payload };
     },
     addQuestion: (state, action) => {
-      state.data.questions.push({ ...action.payload });
+      state.data.questions = [...state.data.questions, { ...action.payload }];
     },
     updateQuestion: (state, action) => {
-      state.data.questions[action.payload.index] = {
-        ...action.payload.question,
-      };
+      const newArr = state.data.questions.map((obj) => {
+        if (obj.id === action.payload.id) {
+          return { ...obj, ...action.payload.question };
+        }
+        return obj;
+      });
+      state.data.questions = newArr;
     },
     deleteQuestion: (state, action) => {
-      const deleted = state.data.questions.filter((q, index) => {
-        return index !== action.payload;
+      const updatedArr = state.data.questions.filter((q) => {
+        return q.id !== action.payload;
       });
-      state.data.questions = deleted;
+
+      state.data.questions = updatedArr;
     },
     changeQuestionText: (state, action) => {
-      state.data.questions[action.payload.index].text = action.payload.text;
+      const updatedArr = state.data.questions.map((q) => {
+        if (q.id === action.payload.id) {
+          return { ...q, text: action.payload.text };
+        }
+        return q;
+      });
+      state.data.questions = updatedArr;
     },
     changeQuestionType: (state, action) => {
-      if (
-        state.data.questions[action.payload.index].type !== action.payload.type
-      ) {
-        state.data.questions[action.payload.index].type = action.payload.type;
-        if (action.payload.type.endsWith('Text')) {
-          const obj = state.data.questions[action.payload.index];
-          delete obj.options;
-          state.data.questions[action.payload.index] = { ...obj };
-        } else {
-          state.data.questions[action.payload.index].options = [''];
+      const updatedArr = state.data.questions.map((q) => {
+        if (q.id === action.payload.id) {
+          const updatedQuestion = { ...q, type: action.payload.type };
+          if (action.payload.type === 'multipleChoice') {
+            updatedQuestion.options = [''];
+          }
+          return updatedQuestion;
         }
-      }
+        return q;
+      });
+      state.data.questions = updatedArr;
     },
     changeQuestionOptions: (state, action) => {
-      state.data.questions[action.payload.index].options =
-        action.payload.options;
+      const updatedArr = state.data.questions.map((q) => {
+        if (q.id === action.payload.id) {
+          const updatedQuestion = {
+            ...q,
+            options: [...action.payload.options],
+          };
+          return updatedQuestion;
+        }
+        return q;
+      });
+      state.data.questions = updatedArr;
     },
     setQuestionActive: (state, action) => {
-      state.data.questions[action.payload.index].active = action.payload.active;
+      const updatedArr = state.data.questions.map((q) => {
+        if (q.id === action.payload.id) {
+          return { ...q, active: action.payload.active };
+        }
+        return q;
+      });
+      state.data.questions = updatedArr;
     },
     setQuestionRequired: (state, action) => {
-      state.data.questions[action.payload.index].required =
-        action.payload.required;
+      const updatedArr = state.data.questions.map((q) => {
+        if (q.id === action.payload.id) {
+          return { ...q, required: action.payload.required };
+        }
+        return q;
+      });
+      state.data.questions = updatedArr;
     },
     setQuestionAnswer: (state, action) => {
-      state.data.questions[action.payload.index].answer = action.payload.answer;
+      const updatedArr = state.data.questions.map((q) => {
+        if (q.id === action.payload.id) {
+          return { ...q, answer: action.payload.answer };
+        }
+        return q;
+      });
+      state.data.questions = updatedArr;
     },
   },
   extraReducers: (builder) => {
