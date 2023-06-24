@@ -11,7 +11,18 @@ import {
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import TextAnswer from './TextAnswer';
 import QuestionTypeDropdown from './QuestionTypeDropdown';
-import { Box, Typography, Paper, TextField } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  TextField,
+  Divider,
+  Grid,
+  FormControlLabel,
+  Switch,
+  ClickAwayListener,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //QuestionBox component çevirimine devam edilecek
 const QuestionBox = ({ question, editable }) => {
@@ -24,7 +35,6 @@ const QuestionBox = ({ question, editable }) => {
   };
 
   const handleActiveSet = (event) => {
-    console.log(question.active);
     dispatch(setQuestionActive({ id: question.id, active: !question.active }));
   };
 
@@ -80,7 +90,6 @@ const QuestionBox = ({ question, editable }) => {
           label="Question"
           multiline
           rows={2}
-          defaultValue="Answer..."
           value={question?.text}
           onChange={handleTextChange}
         />
@@ -91,42 +100,47 @@ const QuestionBox = ({ question, editable }) => {
       {returnQuestionType(question?.type || 'text')}
       {isEditing && (
         <>
-          <hr className="border-1 border-black dark:border-com-primary-100" />
-          <div className="h-8 md:h-12 flex flex-row gap-x-2 md:gap-x-4 justify-center items-center">
-            <QuestionTypeDropdown questionId={question.id} />
-            <span>|</span>
-            <div className="flex justify-center items-center">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  defaultChecked={question?.active}
-                  className="sr-only peer"
-                  onChange={handleActiveSet}
-                />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Active
-                </span>
-              </label>
-            </div>
-            <span>|</span>
-            <div className="flex justify-center items-center">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  defaultChecked={question?.required}
-                  className="sr-only peer"
-                  onChange={handleRequiredSet}
-                />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Required
-                </span>
-              </label>
-            </div>
-            <span>|</span>
-            <CloseIcon onClick={handleDeleteQuestion} fontSize="medium" />
-          </div>
+          <Divider component="div" role="presentation">
+            ACTIONS
+          </Divider>
+          <Grid
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 6, sm: 6, md: 3 }}
+            className="justify-center items-center"
+          >
+            <Grid item className="flex justify-center items-center">
+              <QuestionTypeDropdown questionId={question.id} />
+            </Grid>
+            <Divider orientation="vertical" variant="middle" flexItem></Divider>
+            <Grid item className="flex justify-center items-center">
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={handleActiveSet}
+                    checked={question?.active}
+                  />
+                }
+                label="Active"
+              />
+            </Grid>
+            <Divider orientation="vertical" variant="middle" flexItem></Divider>
+            <Grid item className="flex justify-center items-center">
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={handleRequiredSet}
+                    checked={question?.required}
+                  />
+                }
+                label="Required"
+              />
+            </Grid>
+            <Divider orientation="vertical" variant="middle" flexItem></Divider>
+            <Grid item>
+              <DeleteIcon onClick={handleDeleteQuestion} fontSize="large" />
+            </Grid>
+          </Grid>
         </>
       )}
     </Paper>

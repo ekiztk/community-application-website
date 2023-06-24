@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, Stack } from '@mui/material';
 import ModalHeader from 'components/modal/ModalHeader';
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,10 +17,8 @@ const ApplicationSettings = ({ data, close }) => {
   const [updatingError, setUpdatingError] = useState(null);
 
   const [name, setName] = useState(data.name || '');
-  const [startDate, setStartDate] = useState(data.startDate || new Date());
-  const [deadlineDate, setDeadlineDate] = useState(
-    data.deadlineDate || new Date()
-  );
+  const [startDate, setStartDate] = useState(new Date(data.startDate));
+  const [deadlineDate, setDeadlineDate] = useState(new Date(data.deadlineDate));
 
   const [isRemoving, setIsRemoving] = useState(false);
   const [removingError, setRemovingError] = useState(null);
@@ -64,7 +62,7 @@ const ApplicationSettings = ({ data, close }) => {
   return (
     <>
       <ModalHeader title="Settings" />
-      <div className="flex flex-col justify-center items-center p-4 md:px-8">
+      <Stack alignItems="center" spacing={4} direction="column" padding={2}>
         <TextField
           id="name"
           name="name"
@@ -78,27 +76,30 @@ const ApplicationSettings = ({ data, close }) => {
             label="Start Date"
             id="startDate"
             name="startDate"
-            value={values.startDate}
-            onChange={(date) => {
-              console.log(date);
-              setFieldValue('startDate', date);
-            }}
-            minDate={new Date()}
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            readOnly
           />
           <DatePicker
             label="Deadline Date"
             id="deadlineDate"
             name="deadlineDate"
-            value={values.deadlineDate}
-            onChange={(date) => setFieldValue('deadlineDate', date)}
+            value={deadlineDate}
+            onChange={(e) => setDeadlineDate(e.target.value)}
             minDate={new Date()}
           />
         </LocalizationProvider>
-        <div className="flex flex-col border-gray-500 border-solid border-2 p-2 my-2">
-          <p>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="center"
+          sx={{ p: 1, border: '1px dashed grey' }}
+        >
+          <Typography variant="body2">
             Please write down the name of the application to delete it
             permamently.
-          </p>
+          </Typography>
           <Button
             loading={isRemoving}
             onClick={handleDeleteApplication}
@@ -107,7 +108,7 @@ const ApplicationSettings = ({ data, close }) => {
           >
             <DeleteIcon />
           </Button>
-        </div>
+        </Box>
         <Button
           loading={isUpdating}
           onClick={handleUpdateApplication}
@@ -116,7 +117,7 @@ const ApplicationSettings = ({ data, close }) => {
         >
           Update
         </Button>
-      </div>
+      </Stack>
     </>
   );
 };

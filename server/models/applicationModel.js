@@ -35,6 +35,7 @@ const applicationSchema = new mongoose.Schema(
     },
     startDate: {
       type: Date,
+      immutable: true,
       validate: {
         validator: function(val) {
           return val >= Date.now();
