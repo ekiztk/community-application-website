@@ -7,7 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import ApplicationEditBar from 'components/ui/ApplicationEditBar';
+import ApplicationEditBar from 'components/ui/application/ApplicationEditBar';
+import ApplicationHeader from 'components/ui/application/ApplicationHeader';
+import { Helmet } from 'react-helmet';
 
 const EditApplication = () => {
   const [doFetchApplication, isLoading, loadingError] =
@@ -38,6 +40,10 @@ const EditApplication = () => {
 
   return (
     <Box sx={{ height: '100%' }}>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Edit {application.name}</title>
+      </Helmet>
       <ApplicationEditBar />
       <Box
         display="flex"
@@ -47,9 +53,10 @@ const EditApplication = () => {
         gap={4}
         className="py-4"
       >
+        <ApplicationHeader application={application} showEdit />
         {application?.questions?.length > 0 ? (
           application?.questions.map((q, index) => {
-            return <QuestionBox key={q.id} question={q} editable />;
+            return <QuestionBox key={q.id} question={q} showEdit />;
           })
         ) : (
           <Typography variant="h5" alignContent="center">

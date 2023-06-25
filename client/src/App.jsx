@@ -11,6 +11,7 @@ import Login from 'pages/Login';
 import Signup from 'pages/Signup';
 import Applications from 'pages/Applications';
 import EditApplication from 'pages/EditApplication';
+import ApplyApplication from 'pages/ApplyApplication';
 
 //application edit sayfası yapılacak
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: '/applications/edit/:applicationId',
     element: <EditApplication />,
+  },
+  {
+    path: '/applications/:applicationSlug',
+    element: <ApplyApplication />,
   },
 ]);
 

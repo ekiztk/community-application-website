@@ -10,7 +10,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { format } from 'date-fns';
 
 const ApplicationBox = ({ item, showEdit }) => {
-  console.log(item.startDate);
   return (
     <Card
       key={item.id}

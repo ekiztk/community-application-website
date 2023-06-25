@@ -1,17 +1,11 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import useFetch from 'hooks/useFetch';
-import {
-  Button,
-  Typography,
-  Box,
-  CircularProgress,
-  Alert,
-  Container,
-} from '@mui/material';
+import { Button, Typography, Box } from '@mui/material';
 import { createModal } from 'hooks/modal';
 import Navbar from 'components/ui/Navbar';
-import ApplicationBox from 'components/ui/ApplicationBox';
+import ApplicationBox from 'components/ui/application/ApplicationBox';
+import Loading from 'components/ui/Loading';
 
 //pagination needed
 const Applications = ({ showEdit }) => {
@@ -31,9 +25,8 @@ const Applications = ({ showEdit }) => {
         <Typography variant="h1" component="h1" className="text-center">
           Applications
         </Typography>
+        <Loading loading={loading} error={error} />
         <div className="w-full flex justify-center gap-2 md:gap-4 items-center p-2 md:p-8">
-          {/* <BiGridHorizontal className="h-12 w-12 cursor-pointer text-black dark:text-com-primary-500" />
-          <BiListUl className="h-12 w-12 cursor-pointer text-black dark:text-com-primary-500" /> */}
           {true && (
             <Button
               variant="contained"
@@ -42,14 +35,10 @@ const Applications = ({ showEdit }) => {
                 createModal('createNewApplication');
               }}
             >
-              CREATE NEW
+              Create New
             </Button>
           )}
         </div>
-        <Container className="text-center">
-          {loading && <CircularProgress />}
-          {error && <Alert severity="error">{error.message}</Alert>}
-        </Container>
         <div className="p-2 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-8">
           {
             <>

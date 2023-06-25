@@ -1,6 +1,5 @@
 //question box ve alt componentleri yapılacak
 import React, { useState, useRef, useEffect } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   changeQuestionText,
@@ -12,7 +11,6 @@ import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import TextAnswer from './TextAnswer';
 import QuestionTypeDropdown from './QuestionTypeDropdown';
 import {
-  Box,
   Typography,
   Paper,
   TextField,
@@ -20,12 +18,11 @@ import {
   Grid,
   FormControlLabel,
   Switch,
-  ClickAwayListener,
+  IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-//QuestionBox component çevirimine devam edilecek
-const QuestionBox = ({ question, editable }) => {
+const QuestionBox = ({ question, showEdit }) => {
   const myRef = useRef();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
@@ -57,7 +54,7 @@ const QuestionBox = ({ question, editable }) => {
   };
 
   const handleClickOutside = (e) => {
-    if (editable && !myRef.current.contains(e.target)) {
+    if (showEdit && !myRef.current.contains(e.target)) {
       setIsEditing(false);
     }
   };
@@ -69,7 +66,7 @@ const QuestionBox = ({ question, editable }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   });
 
-  if (!editable) {
+  if (!showEdit) {
     return (
       <Paper className="p-1 md:p-2 lg:p-4 text-left rounded-md w-[80%] lg:w-[60%] flex flex-col gap-y-4">
         <Typography variant="body1">{question?.text}</Typography>
@@ -138,7 +135,9 @@ const QuestionBox = ({ question, editable }) => {
             </Grid>
             <Divider orientation="vertical" variant="middle" flexItem></Divider>
             <Grid item>
-              <DeleteIcon onClick={handleDeleteQuestion} fontSize="large" />
+              <IconButton size="large" color="inherit">
+                <DeleteIcon onClick={handleDeleteQuestion} />
+              </IconButton>
             </Grid>
           </Grid>
         </>
