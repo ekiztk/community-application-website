@@ -5,6 +5,8 @@ const authController = require('./../controllers/authController');
 //:applicationId/responses
 const router = express.Router({ mergeParams: true });
 
+router.post('/hasResponse', responseController.canApply);
+
 //Protect all routes after this middleware
 router.use(authController.protect);
 

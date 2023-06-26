@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setQuestionAnswer, changeQuestionOptions } from 'store';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,11 +7,7 @@ import { Typography, TextField } from '@mui/material';
 
 const MultipleChoiceAnswer = ({ question, showEdit }) => {
   const dispatch = useDispatch();
-  const options = useSelector(
-    (state) =>
-      state.application.data.questions.find((item) => item.id === question.id)
-        .options
-  );
+  const options = question.options;
 
   function handleAddRadio(e) {
     e.preventDefault();
@@ -39,8 +35,10 @@ const MultipleChoiceAnswer = ({ question, showEdit }) => {
     dispatch(changeQuestionOptions({ id: question.id, options: [...arr] }));
   }
 
-  function handleSaveAnswer(e) {
-    dispatch(setQuestionAnswer({ id: question.id, answer: e.target.value }));
+  function handleSaveAnswer(answerIndex) {
+    dispatch(
+      setQuestionAnswer({ id: question.id, answer: answerIndex.toString() })
+    );
   }
 
   const addRadioOption = () => {
@@ -60,6 +58,7 @@ const MultipleChoiceAnswer = ({ question, showEdit }) => {
       <div className="flex flex-col gap-x-2 gap-y-2 justify-start items-start max-w-[80%]">
         {options?.length > 0 &&
           options.map((option, index) => {
+            const isAnswer = index.toString() === question.answer;
             return (
               <div
                 key={index}
@@ -70,14 +69,10 @@ const MultipleChoiceAnswer = ({ question, showEdit }) => {
                   type="radio"
                   className="w-4 h-4 inline dark:text-com-primary-100 "
                   value={option}
-                  onChange={handleSaveAnswer}
+                  onChange={() => handleSaveAnswer(index)}
+                  checked={isAnswer}
                 />
-                <label
-                  className="dark:text-com-primary-100"
-                  htmlFor={`o-${question.id}-${index}`}
-                >
-                  {option}
-                </label>
+                <label htmlFor={`o-${question.id}-${index}`}>{option}</label>
               </div>
             );
           })}

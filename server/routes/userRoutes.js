@@ -39,4 +39,3 @@ router
   .delete(userController.deleteUser);
 
 module.exports = router;
-//app.js' eklemek kaldı

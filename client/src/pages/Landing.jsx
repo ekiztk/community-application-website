@@ -1,8 +1,8 @@
-import { heroImage } from "../assets/img";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import Navbar from "../components/ui/Navbar";
-import Typography from "@mui/material/Typography";
-import { Helmet } from "react-helmet";
+import { heroImage } from '../assets/img';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import Navbar from '../components/ui/Navbar';
+import Typography from '@mui/material/Typography';
+import { Helmet } from 'react-helmet';
 
 const Landing = () => {
   return (

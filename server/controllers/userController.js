@@ -95,7 +95,6 @@ exports.createUser = (req, res) => {
   });
 };
 
-//responses user ile gelmiyor
 exports.getUser = factory.getOne(User, { path: 'responses' });
 exports.getAllUsers = factory.getAll(User);
 

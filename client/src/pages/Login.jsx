@@ -51,7 +51,6 @@ const Login = () => {
           token: loggedIn.token,
         })
       );
-      console.log(loggedIn.data.user);
       navigate('/');
     }
   };

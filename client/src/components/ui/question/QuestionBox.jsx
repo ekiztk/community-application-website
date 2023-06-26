@@ -1,6 +1,6 @@
 //question box ve alt componentleri yapılacak
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   changeQuestionText,
   setQuestionActive,
@@ -26,6 +26,7 @@ const QuestionBox = ({ question, showEdit }) => {
   const myRef = useRef();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
+  const [isAnswerEmpty, setIsAnswerEmpty] = useState(false);
 
   const handleTextChange = (event) => {
     dispatch(changeQuestionText({ id: question.id, text: event.target.value }));
@@ -66,10 +67,32 @@ const QuestionBox = ({ question, showEdit }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   });
 
+  const handleBlur = (e) => {
+    if (
+      !question.hasOwnProperty('answer') ||
+      (typeof question.answer === 'string' &&
+        question.answer?.trim().length === 0) ||
+      typeof question.answer !== 'string'
+    ) {
+      setIsAnswerEmpty(true);
+    } else {
+      setIsAnswerEmpty(false);
+    }
+  };
+
   if (!showEdit) {
     return (
-      <Paper className="p-1 md:p-2 lg:p-4 text-left rounded-md w-[80%] lg:w-[60%] flex flex-col gap-y-4">
-        <Typography variant="body1">{question?.text}</Typography>
+      <Paper
+        onBlur={handleBlur}
+        elevation={24}
+        className={`p-1 md:p-2 lg:p-4 text-left rounded-md w-[80%] lg:w-[60%] flex flex-col gap-y-4 ${
+          isAnswerEmpty && 'border-solid border-2 border-red-500'
+        }`}
+      >
+        <Typography variant="body1">
+          {question.text}
+          {question.required && <span className="text-red-500"> *</span>}
+        </Typography>
         {returnQuestionType(question?.type)}
       </Paper>
     );
@@ -77,9 +100,9 @@ const QuestionBox = ({ question, showEdit }) => {
 
   return (
     <Paper
+      elevation={24}
       ref={myRef}
       onClick={handleClickInside}
-      elevation={24}
       className="p-1 md:p-2 lg:p-4 text-left rounded-md w-[80%] lg:w-[60%] flex flex-col gap-y-4"
     >
       {isEditing ? (

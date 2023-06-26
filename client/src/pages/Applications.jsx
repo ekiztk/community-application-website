@@ -25,7 +25,7 @@ const Applications = ({ showEdit }) => {
         <Typography variant="h1" component="h1" className="text-center">
           Applications
         </Typography>
-        <Loading loading={loading} error={error} />
+        <Loading loading={loading} error={error?.message} />
         <div className="w-full flex justify-center gap-2 md:gap-4 items-center p-2 md:p-8">
           {true && (
             <Button
