@@ -14,6 +14,10 @@ const Applications = ({ showEdit }) => {
     url: `${import.meta.env.VITE_API_URL}/applications`,
   });
 
+  if (loading || error) {
+    return <Loading loading={loading} error={error?.message} />;
+  }
+
   return (
     <>
       <Helmet>

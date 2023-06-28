@@ -10,6 +10,8 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import ApplicationEditBar from 'components/ui/application/ApplicationEditBar';
 import ApplicationHeader from 'components/ui/application/ApplicationHeader';
 import { Helmet } from 'react-helmet';
+import Loading from 'components/ui/Loading';
+//üyelere yetki verme eklenecek
 
 const EditApplication = () => {
   const [doFetchApplication, isLoading, loadingError] =
@@ -37,6 +39,10 @@ const EditApplication = () => {
       })
     );
   };
+
+  if (isLoading || loadingError) {
+    return <Loading loading={isLoading} error={loadingError?.message} />;
+  }
 
   return (
     <Box sx={{ height: '100%' }}>

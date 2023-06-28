@@ -12,7 +12,7 @@ import usePagination from 'hooks/usePagination';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import asyncSome from 'utils/asyncSome';
-//bildirim gösterilmesi yapılacak
+import { toast } from 'react-toastify';
 
 const ApplyApplication = () => {
   const [doFetchApplication, isLoading, loadingError] =
@@ -46,8 +46,11 @@ const ApplyApplication = () => {
 
   const handleSendResponse = async (event) => {
     setIsSendingResponse(true);
+    toast.loading('Please wait...', {
+      toastId: 'applyMessage',
+    });
     try {
-      if (!user) throw 'You must log in to send response!';
+      if (!user) throw { message: 'You must log in to send response!' };
       //check if there is an unanswered required question
       const resultOfCondition = await asyncSome(
         application.questions,
@@ -60,7 +63,8 @@ const ApplyApplication = () => {
           );
         }
       );
-      if (resultOfCondition) throw 'All required questions must be answered!';
+      if (resultOfCondition)
+        throw { message: 'All required questions must be answered!' };
       //check if user has active pending response
       await axios.post(
         `${import.meta.env.VITE_API_URL}/responses/hasResponse`,
@@ -79,22 +83,26 @@ const ApplyApplication = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      toast.update('applyMessage', {
+        render: 'Your response has been sent.',
+        type: 'success',
+        isLoading: false,
+      });
     } catch (error) {
       console.log(error);
       setSendingResponseError(error);
+      toast.update('applyMessage', {
+        render: error?.response?.data?.message || error?.message,
+        type: 'error',
+        isLoading: false,
+      });
     } finally {
       setIsSendingResponse(false);
     }
   };
 
   if (isLoading || loadingError) {
-    return (
-      <Loading
-        className="py-4"
-        loading={isLoading}
-        error={loadingError?.message}
-      />
-    );
+    return <Loading loading={isLoading} error={loadingError?.message} />;
   }
 
   console.log(application);

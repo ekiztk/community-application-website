@@ -10,10 +10,11 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { createModal, destroyAllModal } from 'hooks/modal';
+import { createModal } from 'hooks/modal';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ApplicationEditBar = () => {
   const application = useSelector((state) => state.application.data);
@@ -22,16 +23,30 @@ const ApplicationEditBar = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingError, setUpdatingError] = useState(null);
 
-  const handleUpdateApplication = () => {
-    setIsUpdating(true);
-    axios
+  const promiseOfSaving = () => {
+    return axios
       .patch(
         `${import.meta.env.VITE_API_URL}/applications/${application.id}`,
         { ...application },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-      .catch((err) => setUpdatingError(err))
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        setUpdatingError(err);
+        return Promise.reject(err);
+      })
       .finally(() => setIsUpdating(false));
+  };
+
+  const handleUpdateApplication = async () => {
+    setIsUpdating(true);
+    toast.promise(promiseOfSaving, {
+      pending: 'Please wait...',
+      success: 'Save is done.',
+      error: 'An error occured. Please try again later.',
+    });
   };
 
   return (

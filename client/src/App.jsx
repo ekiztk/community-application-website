@@ -12,8 +12,9 @@ import Signup from 'pages/Signup';
 import Applications from 'pages/Applications';
 import EditApplication from 'pages/EditApplication';
 import ApplyApplication from 'pages/ApplyApplication';
-
-//application edit sayfası yapılacak
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//edit/apply sayfalarına bildirimler eklendi
 
 const router = createBrowserRouter([
   {
@@ -66,23 +67,28 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
-      <CssBaseline />
-      <RouterProvider router={router} />
-      <>
-        {modals.length > 0 && <Modal />}
-        <div
-          className="fixed cursor-pointer bottom-2 right-2 h-12 w-12"
-          onClick={changeTheme}
-        >
-          {isDarkTheme ? (
-            <img src={lightModeIcon} />
-          ) : (
-            <img src={darkModeIcon} />
-          )}
-        </div>
-      </>
-    </ThemeProvider>
+    <>
+      <ThemeProvider
+        theme={isDarkTheme ? createTheme(dark) : createTheme(light)}
+      >
+        <CssBaseline />
+        <RouterProvider router={router} />
+        <>
+          {modals.length > 0 && <Modal />}
+          <div
+            className="fixed cursor-pointer bottom-2 right-2 h-12 w-12"
+            onClick={changeTheme}
+          >
+            {isDarkTheme ? (
+              <img src={lightModeIcon} />
+            ) : (
+              <img src={darkModeIcon} />
+            )}
+          </div>
+        </>
+      </ThemeProvider>
+      <ToastContainer autoClose={2000} theme={isDarkTheme ? 'dark' : 'light'} />
+    </>
   );
 }
 

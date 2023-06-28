@@ -10,8 +10,6 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import de from 'date-fns/locale/de';
 
-//datepicker çalışmıyor
-
 const ApplicationSettings = ({ data, close }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingError, setUpdatingError] = useState(null);
