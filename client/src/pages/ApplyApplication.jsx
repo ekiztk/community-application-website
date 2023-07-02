@@ -111,7 +111,7 @@ const ApplyApplication = () => {
     <Box sx={{ height: '100%' }}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Apply for {application.name}</title>
+        <title>Apply for</title>
       </Helmet>
       <Box
         display="flex"

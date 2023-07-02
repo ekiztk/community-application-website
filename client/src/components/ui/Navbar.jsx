@@ -1,92 +1,205 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, AppBar } from '@mui/material';
+import {
+  Button,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Avatar,
+  Box,
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemButton,
+  ListItemText,
+} from '@mui/material';
 import { mainLogo, profileImage } from '../../assets/img';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLogout } from 'store';
+import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { ChevronLeft } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
+}));
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const isAuth = Boolean(useSelector((state) => state.auth.token));
+  const isMobile = useMediaQuery('(max-width:768px)');
 
-  const isLoggedIn = () => {
+  const authContent = () => {
     if (user && isAuth) {
-      return (
+      return !isMobile ? (
         <>
-          <Link
-            to="/profile"
-            className="flex flex-row justify-center items-center cursor-pointer whitespace-nowrap"
-          >
-            <img
-              className="p-2 object-contain max-h-12 rounded-full"
-              src={profileImage}
-              alt="logo"
-            />
-            {user?.name}
-          </Link>
-
-          <Button variant="outlined" color="error">
-            <Link to="/" onClick={() => dispatch(setLogout())}>
-              LOG OUT
+          <Button color="inherit">
+            <Link
+              to="/profile"
+              className="flex flex-row justify-center items-center cursor-pointer whitespace-nowrap"
+            >
+              <Avatar alt="profile photo" src={profileImage} />
+              {user?.name}
             </Link>
           </Button>
+
+          <Button
+            className="px-2"
+            startIcon={<LogoutIcon />}
+            variant="outlined"
+            color="error"
+          >
+            <Link to="/" onClick={() => dispatch(setLogout())}>
+              Log Out
+            </Link>
+          </Button>
+        </>
+      ) : (
+        <>
+          <ListItem key="Profile" disablePadding>
+            <ListItemButton component={Link} to="/profile">
+              <ListItemIcon>
+                <Avatar alt="profile photo" src={profileImage} />
+              </ListItemIcon>
+              <ListItemText primary={user?.name} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="logout" disablePadding>
+            <ListItemButton
+              component={Link}
+              to="/"
+              onClick={() => dispatch(setLogout())}
+            >
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log Out" />
+            </ListItemButton>
+          </ListItem>
         </>
       );
     }
 
-    return (
+    return !isMobile ? (
       <>
         <Button variant="contained">
           <Link to="/auth/login">Log In</Link>
         </Button>
 
-        <Button variant="contained" color="success">
+        <Button variant="contained">
           <Link to="/auth/signup">Sign Up</Link>
         </Button>
+      </>
+    ) : (
+      <>
+        <ListItem key="login" disablePadding>
+          <ListItemButton component={Link} to="/auth/login">
+            <ListItemText primary="Log In" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem key="signup" disablePadding>
+          <ListItemButton color="success" component={Link} to="/auth/signup">
+            <ListItemText primary="Sign Up" />
+          </ListItemButton>
+        </ListItem>
       </>
     );
   };
 
   return (
-    <AppBar position="sticky" color="default" className="px-2">
-      <div className="flex items-center justify-between space-x-4 lg:space-x-8">
-        <Link to="/">
-          <img
-            className="pl-4 md:pl-0 object-contain max-h-16"
-            src={mainLogo}
-            alt="logo"
-          />
-        </Link>
-        <div className="block md:hidden pr-4" onClick={() => setOpen(!open)}>
-          <div className="space-y-1 cursor-pointer">
-            <div className="bg-black w-8 h-1 rounded-full"></div>
-            <div className="bg-black w-8 h-1 rounded-full"></div>
-            <div className="bg-black w-8 h-1 rounded-full"></div>
-          </div>
-        </div>
-        <nav className="pr-4 hidden md:flex justify-end flex-1">
-          <div className="flex items-center lg:text-lg space-x-4 lg:space-x-8">
-            <Link to="/">HOME</Link>
-            <Link to="/applications">APPLICATIONS</Link>
-            <div className="cursor-none">|</div>
-            {isLoggedIn()}
-          </div>
-        </nav>
-      </div>
-      <div
-        className={
-          open
-            ? 'absolute min-h-[60vh] top-16 flex flex-col justify-evenly items-center gap-y-2 md:hidden w-full'
-            : 'hidden'
-        }
+    <>
+      <AppBar
+        component="nav"
+        position="sticky"
+        color="default"
+        className="px-2 max-h-16"
       >
-        <Link to="/">HOME</Link>
-        <Link to="/applications">APPLICATIONS</Link>
-        {isLoggedIn()}
-      </div>
-    </AppBar>
+        <Toolbar className="gap-2">
+          {isMobile && (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 1 }}
+              onClick={() => setOpen(!open)}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          <Link
+            className={`${isMobile && 'flex justify-end items-end'} flex-grow`}
+            to="/"
+          >
+            <img
+              className="object-contain max-h-16"
+              src={mainLogo}
+              alt="logo"
+            />
+          </Link>
+          {!isMobile && (
+            <>
+              <Button color="inherit">
+                <Link to="/">Home</Link>
+              </Button>
+              <Button color="inherit">
+                <Link to="/applications">Applications</Link>
+              </Button>
+              <Divider orientation="vertical" variant="middle" flexItem />
+              {authContent()}
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+      {isMobile && (
+        <Drawer
+          sx={{
+            width: 240,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: 240,
+              boxSizing: 'border-box',
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <IconButton onClick={() => setOpen(!open)}>
+              <ChevronLeft />
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            <ListItem key="Home" disablePadding>
+              <ListItemButton component={Link} to="/">
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem key="Applications" disablePadding>
+              <ListItemButton component={Link} to="/applications">
+                <ListItemText primary="Applications" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>{authContent()}</List>
+        </Drawer>
+      )}
+    </>
   );
 };
 

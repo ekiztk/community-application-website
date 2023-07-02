@@ -4,6 +4,7 @@ import {
   Typography,
   CardContent,
   CardActions,
+  Stack,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -32,16 +33,25 @@ const ApplicationBox = ({ item, showEdit }) => {
           </Typography>
         </div>
       </CardContent>
-      <CardActions className="p-2 gap-2 flex flex-col items-center justify-center">
-        <Button variant="contained" color="primary">
-          <Link to={`/applications/${item.slug}`}>Apply</Link>
-        </Button>
-
-        {showEdit && (
-          <Button variant="contained" color="success">
-            <Link to={`/applications/edit/${item.id}`}>Edit</Link>
+      <CardActions className="p-2">
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          alignContent="center"
+          className="w-full"
+        >
+          <Button variant="contained" color="primary">
+            <Link to={`/applications/${item.slug}`}>Apply</Link>
           </Button>
-        )}
+
+          {showEdit && (
+            <Button variant="contained" color="success">
+              <Link to={`/applications/edit/${item.id}`}>Edit</Link>
+            </Button>
+          )}
+        </Stack>
       </CardActions>
     </Card>
   );

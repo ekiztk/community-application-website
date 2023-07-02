@@ -50,9 +50,10 @@ const ApplicationHeader = ({ application, showEdit }) => {
       <div className="mt-2 md:mt-4 flex flex-row items-center justify-center gap-2">
         <CalendarMonthIcon fontSize="large" />
         <Typography variant="body2" fontWeight="bold">
-          {format(new Date(Date.parse(startDate)), 'MM/dd/yyyy') +
-            ' - ' +
-            format(new Date(Date.parse(deadlineDate)), 'MM/dd/yyyy')}
+          {startDate !== '' &&
+            format(new Date(Date.parse(startDate)), 'MM/dd/yyyy') +
+              ' - ' +
+              format(new Date(Date.parse(deadlineDate)), 'MM/dd/yyyy')}
         </Typography>
       </div>
     </Paper>
