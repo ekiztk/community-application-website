@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { Typography, TextField } from '@mui/material';
 
-const MultipleChoiceAnswer = ({ question, showEdit }) => {
+const MultipleChoiceAnswer = ({ question, showEdit, disabled }) => {
   const dispatch = useDispatch();
   const options = question.options;
 
@@ -71,6 +71,7 @@ const MultipleChoiceAnswer = ({ question, showEdit }) => {
                   value={option}
                   onChange={() => handleSaveAnswer(index)}
                   checked={isAnswer}
+                  disabled={disabled}
                 />
                 <label htmlFor={`o-${question.id}-${index}`}>{option}</label>
               </div>

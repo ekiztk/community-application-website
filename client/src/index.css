@@ -4,13 +4,10 @@
 
 html,
 body,
-#root {
+#root,
+.content {
   height: 100%;
   width: 100%;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 .bottom-line {

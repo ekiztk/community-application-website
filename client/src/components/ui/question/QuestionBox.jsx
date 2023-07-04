@@ -1,4 +1,3 @@
-//question box ve alt componentleri yapılacak
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -22,7 +21,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const QuestionBox = ({ question, showEdit }) => {
+const QuestionBox = ({ question, showEdit, disabled }) => {
   const myRef = useRef();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
@@ -48,9 +47,21 @@ const QuestionBox = ({ question, showEdit }) => {
 
   const returnQuestionType = (type) => {
     if (type === 'text') {
-      return <TextAnswer showEdit={isEditing} question={question} />;
+      return (
+        <TextAnswer
+          showEdit={isEditing}
+          question={question}
+          disabled={disabled}
+        />
+      );
     } else if (type === 'multipleChoice') {
-      return <MultipleChoiceAnswer showEdit={isEditing} question={question} />;
+      return (
+        <MultipleChoiceAnswer
+          showEdit={isEditing}
+          question={question}
+          disabled={disabled}
+        />
+      );
     }
   };
 

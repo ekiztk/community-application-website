@@ -1,5 +1,5 @@
 import { destroyAllModal, destroyModal, useModals } from 'hooks/modal';
-import { Box } from '@mui/material';
+import { Box, Backdrop } from '@mui/material';
 import modalData from 'data/modal';
 import React from 'react';
 
@@ -7,15 +7,12 @@ const Modal = () => {
   const modals = useModals();
   //destroyAllModal();
   return (
-    <Box
-      tabIndex="-1"
-      className="fixed bg-black/50 top-0 left-0 z-[1055] h-full w-full overflow-y-auto overflow-x-hidden outline-none flex justify-center items-center"
-    >
+    <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
       <Box
         sx={{
           bgcolor: 'background.paper',
         }}
-        className="w-[96%] md:w-[60%] transition-all duration-300 ease-in-out rounded-md border-none"
+        className="w-[96%] md:w-[60%] transition-all duration-300 ease-in-out rounded-md border-2 border-white border-solid"
       >
         {modals.map((modal, i) => {
           const m = modalData.find((m) => m.name === modal.name);
@@ -26,7 +23,7 @@ const Modal = () => {
           );
         })}
       </Box>
-    </Box>
+    </Backdrop>
   );
 };
 

@@ -87,14 +87,15 @@ const ApplyApplication = () => {
         render: 'Your response has been sent.',
         type: 'success',
         isLoading: false,
+        autoClose: true,
       });
     } catch (error) {
-      console.log(error);
       setSendingResponseError(error);
       toast.update('applyMessage', {
         render: error?.response?.data?.message || error?.message,
         type: 'error',
         isLoading: false,
+        autoClose: true,
       });
     } finally {
       setIsSendingResponse(false);

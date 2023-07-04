@@ -50,7 +50,7 @@ const CreateNewApplication = ({ data, close }) => {
   return (
     <>
       <ModalHeader title="Create New Application" />
-      <div className="flex flex-col justify-center items-center p-4 md:px-8">
+      <Stack alignItems="center" spacing={4} direction="column" padding={2}>
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValuesApplication}
@@ -127,7 +127,7 @@ const CreateNewApplication = ({ data, close }) => {
             </form>
           )}
         </Formik>
-      </div>
+      </Stack>
     </>
   );
 };

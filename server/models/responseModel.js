@@ -48,47 +48,6 @@ responseSchema.pre(/^find/, function(next) {
   next();
 });
 
-responseSchema.statics.calcPendingResponsesQuantity = async function(appId) {
-  const stats = await this.aggregate([
-    {
-      $match: { application: appId, status: { $eq: 'pending' } }
-    },
-    {
-      $group: {
-        _id: '$application',
-        nResponses: { $sum: 1 }
-      }
-    }
-  ]);
-
-  if (stats.length > 0) {
-    await Application.findByIdAndUpdate(appId, {
-      pendingResponsesQuantity: stats[0].nResponses
-    });
-  } else {
-    await Application.findByIdAndUpdate(appId, {
-      pendingResponsesQuantity: 0
-    });
-  }
-};
-
-responseSchema.post('save', function() {
-  // this points to current review
-  this.constructor.calcPendingResponsesQuantity(this.application);
-});
-
-// findByIdAndUpdate
-// findByIdAndDelete
-responseSchema.pre(/^findOneAnd/, async function(next) {
-  this.r = await this.findOne();
-  next();
-});
-
-responseSchema.post(/^findOneAnd/, async function() {
-  // await this.findOne(); does NOT work here, query has already executed
-  await this.r.constructor.calcPendingResponsesQuantity(this.r.application);
-});
-
 const Response = mongoose.model('Response', responseSchema);
 
 module.exports = Response;

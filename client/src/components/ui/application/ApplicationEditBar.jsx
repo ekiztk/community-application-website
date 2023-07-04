@@ -56,7 +56,7 @@ const ApplicationEditBar = () => {
           size="large"
           edge="start"
           color="inherit"
-          aria-label="menu"
+          aria-label="applications"
           sx={{ mr: 1 }}
         >
           <Link to="/applications">
@@ -70,7 +70,7 @@ const ApplicationEditBar = () => {
           <IconButton
             size="large"
             color="inherit"
-            aria-label="menu"
+            aria-label="settings"
             onClick={() => {
               createModal('applicationSettings', {
                 id: application.id,
@@ -87,7 +87,7 @@ const ApplicationEditBar = () => {
           <IconButton
             size="large"
             color="inherit"
-            aria-label="menu"
+            aria-label="save"
             onClick={handleUpdateApplication}
             disabled={isUpdating}
           >
@@ -95,7 +95,7 @@ const ApplicationEditBar = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Preview">
-          <IconButton size="large" color="inherit" aria-label="menu">
+          <IconButton size="large" color="inherit" aria-label="preview">
             <Link to={`/applications/${application?.slug}`}>
               <PreviewIcon />
             </Link>

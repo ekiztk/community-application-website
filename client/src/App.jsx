@@ -6,14 +6,16 @@ import { darkModeIcon, lightModeIcon } from './assets/img';
 import { useModals } from 'hooks/modal';
 import Modal from 'modals/Modal';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Landing from 'pages/Landing';
 import Login from 'pages/Login';
 import Signup from 'pages/Signup';
 import Applications from 'pages/Applications';
 import EditApplication from 'pages/EditApplication';
 import ApplyApplication from 'pages/ApplyApplication';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Dashboard from 'pages/dashboard/Dashboard';
+import ApplicationResponses from 'pages/ApplicationResponses';
 //edit/apply sayfalarına bildirimler eklendi
 
 const router = createBrowserRouter([
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
   {
     path: '/applications/:applicationSlug',
     element: <ApplyApplication />,
+  },
+  {
+    path: '/applications/:applicationId/responses',
+    element: <ApplicationResponses />,
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />,
   },
 ]);
 
@@ -76,7 +86,7 @@ function App() {
         <>
           {modals.length > 0 && <Modal />}
           <div
-            className="fixed cursor-pointer bottom-2 right-2 h-12 w-12"
+            className="fixed cursor-pointer z-50 bottom-2 right-2 h-10 w-10"
             onClick={changeTheme}
           >
             {isDarkTheme ? (
@@ -87,7 +97,13 @@ function App() {
           </div>
         </>
       </ThemeProvider>
-      <ToastContainer autoClose={2000} theme={isDarkTheme ? 'dark' : 'light'} />
+      <ToastContainer
+        position="top-right"
+        pauseOnHover
+        hideProgressBar={false}
+        autoClose={4000}
+        theme={isDarkTheme ? 'dark' : 'light'}
+      />
     </>
   );
 }

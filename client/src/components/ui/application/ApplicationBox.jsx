@@ -47,9 +47,19 @@ const ApplicationBox = ({ item, showEdit }) => {
           </Button>
 
           {showEdit && (
-            <Button variant="contained" color="success">
-              <Link to={`/applications/edit/${item.id}`}>Edit</Link>
-            </Button>
+            <>
+              <Button variant="contained" color="secondary">
+                <Link
+                  to={`/applications/${item.id}/responses`}
+                  state={{ ...item }}
+                >
+                  Responses
+                </Link>
+              </Button>
+              <Button variant="contained" color="success">
+                <Link to={`/applications/edit/${item.id}`}>Edit</Link>
+              </Button>
+            </>
           )}
         </Stack>
       </CardActions>

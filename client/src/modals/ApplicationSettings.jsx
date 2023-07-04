@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { Box, TextField, Button, Typography, Stack } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Stack,
+  IconButton,
+} from '@mui/material';
 import ModalHeader from 'components/modal/ModalHeader';
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,6 +16,7 @@ import { updateApplication, removeApplication } from 'store';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import de from 'date-fns/locale/de';
+import { toast } from 'react-toastify';
 
 const ApplicationSettings = ({ data, close }) => {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -17,6 +25,7 @@ const ApplicationSettings = ({ data, close }) => {
   const [name, setName] = useState(data.name || '');
   const [startDate, setStartDate] = useState(new Date(data.startDate));
   const [deadlineDate, setDeadlineDate] = useState(new Date(data.deadlineDate));
+  const [nameValidation, setNameValidation] = useState('');
 
   const [isRemoving, setIsRemoving] = useState(false);
   const [removingError, setRemovingError] = useState(null);
@@ -27,6 +36,9 @@ const ApplicationSettings = ({ data, close }) => {
 
   const handleUpdateApplication = () => {
     setIsUpdating(true);
+    toast.loading('Please wait...', {
+      toastId: 'updateMessage',
+    });
     axios
       .patch(
         `${import.meta.env.VITE_API_URL}/applications/${data.id}`,
@@ -34,24 +46,53 @@ const ApplicationSettings = ({ data, close }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => {
-        alert('Updated.');
         dispatch(updateApplication({ name, startDate, deadlineDate }));
+        toast.update('updateMessage', {
+          render: 'The application has been updated.',
+          type: 'success',
+          isLoading: false,
+          autoClose: true,
+        });
         close();
       })
-      .catch((err) => setUpdatingError(err))
+      .catch((error) => {
+        toast.update('updateMessage', {
+          render: error?.response?.data?.message || error?.message,
+          type: 'error',
+          isLoading: false,
+          autoClose: true,
+        });
+        setUpdatingError(error);
+      })
       .finally(() => setIsUpdating(false));
   };
 
   const handleDeleteApplication = () => {
     setIsRemoving(true);
+    toast.loading('Please wait...', {
+      toastId: 'deleteMessage',
+    });
     dispatch(removeApplication({ id: data.id, token: token }))
       .unwrap()
       .then(() => {
-        alert('removed');
+        toast.update('deleteMessage', {
+          render: 'The application has been deleted.',
+          type: 'success',
+          isLoading: false,
+          autoClose: true,
+        });
         close();
         //navigate('/applications/edit', { replace: true });
       })
-      .catch((err) => setRemovingError(err))
+      .catch((error) => {
+        toast.update('deleteMessage', {
+          render: error?.response?.data?.message || error?.message,
+          type: 'error',
+          isLoading: false,
+          autoClose: true,
+        });
+        setRemovingError(error);
+      })
       .finally(() => {
         setIsRemoving(false);
       });
@@ -77,6 +118,7 @@ const ApplicationSettings = ({ data, close }) => {
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             readOnly
+            fullWidth
           />
           <DatePicker
             label="Deadline Date"
@@ -85,6 +127,7 @@ const ApplicationSettings = ({ data, close }) => {
             value={deadlineDate}
             onChange={(e) => setDeadlineDate(e.target.value)}
             minDate={new Date()}
+            fullWidth
           />
         </LocalizationProvider>
         <Box
@@ -98,17 +141,34 @@ const ApplicationSettings = ({ data, close }) => {
             Please write down the name of the application to delete it
             permamently.
           </Typography>
-          <Button
-            loading={isRemoving}
-            onClick={handleDeleteApplication}
-            variant="contained"
-            color="error"
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            gap={1}
           >
-            <DeleteIcon />
-          </Button>
+            <TextField
+              hiddenLabel={true}
+              id="nameValidation"
+              name="nameValidation"
+              type="text"
+              value={nameValidation}
+              onChange={(e) => setNameValidation(e.target.value)}
+              size="small"
+            />
+            <IconButton
+              onClick={handleDeleteApplication}
+              color="error"
+              className="h-full"
+              disabled={nameValidation.trim() === '' || nameValidation !== name}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Box>
         <Button
-          loading={isUpdating}
+          disabled={isUpdating}
           onClick={handleUpdateApplication}
           variant="contained"
           color="success"

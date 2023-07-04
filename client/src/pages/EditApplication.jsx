@@ -48,7 +48,7 @@ const EditApplication = () => {
     <Box sx={{ height: '100%' }}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Edit</title>
+        <title>Edit {application?.name}</title>
       </Helmet>
       <ApplicationEditBar />
       <Box

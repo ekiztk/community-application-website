@@ -36,7 +36,7 @@ const Applications = ({ showEdit }) => {
               variant="contained"
               color="success"
               onClick={() => {
-                createModal('createNewApplication');
+                createModal('newApplication');
               }}
             >
               Create New
