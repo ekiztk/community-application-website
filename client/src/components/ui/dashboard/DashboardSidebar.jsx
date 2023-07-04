@@ -79,9 +79,9 @@ const DashboardSidebar = () => {
                   fontWeight="bold"
                   sx={{ m: '10px 0 0 0' }}
                 >
-                  Ed Roh
+                  Deneme
                 </Typography>
-                <Typography variant="h6">VP Fancy Admin</Typography>
+                <Typography variant="h6">Deneme</Typography>
               </Box>
             </Box>
           )}
