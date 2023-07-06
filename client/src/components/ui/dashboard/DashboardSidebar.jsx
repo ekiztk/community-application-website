@@ -36,7 +36,17 @@ const DashboardSidebar = () => {
         backgroundColor="transparent"
         collapsed={isCollapsed}
       >
-        <Menu iconShape="square">
+        <Menu
+          iconShape="square"
+          menuItemStyles={{
+            button: {
+              '&:hover': {
+                backgroundColor: 'green',
+                color: 'white',
+              },
+            },
+          }}
+        >
           {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -104,7 +114,7 @@ const DashboardSidebar = () => {
             </Typography>
             <Item
               title="Manage Users"
-              to="/team"
+              to="/dashboard/userList"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -143,7 +153,7 @@ const DashboardSidebar = () => {
               fontWeight={'bold'}
               sx={{ m: '15px 0 5px 20px' }}
             >
-              Statistics
+              Stats
             </Typography>
             <Item
               title="Bar Chart"

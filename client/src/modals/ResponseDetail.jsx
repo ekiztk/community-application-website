@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-//bunun yapımında kaldık
 const ResponseDetail = ({ data, close }) => {
   const token = useSelector((state) => state.auth.token);
   const [isSendingResponse, setIsSendingResponse] = useState(false);

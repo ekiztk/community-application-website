@@ -16,7 +16,7 @@ import EditApplication from 'pages/EditApplication';
 import ApplyApplication from 'pages/ApplyApplication';
 import Dashboard from 'pages/dashboard/Dashboard';
 import ApplicationResponses from 'pages/ApplicationResponses';
-//edit/apply sayfalarına bildirimler eklendi
+import UserList from 'pages/dashboard/UserList';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +50,12 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <Dashboard />,
+    children: [
+      {
+        path: 'userList',
+        element: <UserList />,
+      },
+    ],
   },
 ]);
 

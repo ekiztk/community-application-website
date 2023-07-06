@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const useFetch = ({ url, header }) => {
+const useFetch = ({ url, token }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -11,7 +11,9 @@ const useFetch = ({ url, header }) => {
       setLoading(true);
       try {
         let res;
-        res = await axios.get(url, header);
+        res = await axios.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setData(res.data);
       } catch (err) {
         setError(err);
@@ -19,7 +21,7 @@ const useFetch = ({ url, header }) => {
       setLoading(false);
     };
     fetchData();
-  }, [url, header]);
+  }, [url, token]);
 
   const reFetch = async () => {
     setLoading(true);

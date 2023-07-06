@@ -50,8 +50,7 @@ const userSchema = new mongoose.Schema(
     },
     active: {
       type: Boolean,
-      default: true,
-      select: false
+      default: true
     },
     role: {
       type: mongoose.Schema.ObjectId,
@@ -99,7 +98,7 @@ userSchema.pre('save', function(next) {
 //populates role and gets active users
 userSchema.pre(/^find/, function(next) {
   // this points to the current query
-  this.find({ active: { $ne: false } }).populate({
+  this.populate({
     path: 'role',
     select: 'name label permissions'
   });

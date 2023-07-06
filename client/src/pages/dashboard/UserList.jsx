@@ -7,18 +7,14 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { useState } from 'react';
 import { createModal } from 'hooks/modal';
 import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
 
-const ApplicationResponses = () => {
-  const { applicationId } = useParams();
-  const location = useLocation();
-  const application = location.state;
-
+const UserList = () => {
   const [pageSize, setPageSize] = useState(5);
+  const token = useSelector((state) => state.auth.token);
 
   const { data, loading, error, reFetch } = useFetch({
-    url: `${
-      import.meta.env.VITE_API_URL
-    }/applications/${applicationId}/responses?status=pending`,
+    url: `${import.meta.env.VITE_API_URL}/users`,
     token,
   });
 
@@ -28,32 +24,34 @@ const ApplicationResponses = () => {
 
   return (
     <Box>
-      <Typography variant="h3" component="h3" className="text-center">
-        Responses of {application?.name}
+      <Typography variant="h3" component="h3" className="text-left">
+        User List
       </Typography>
-      <Box className="mx-2 mt-4 md:mx-12" height="80vh">
+      <Box className="overflow-x-auto" height="80vh">
         <DataGrid
           rowSelection={false}
           loading={loading}
           rows={data?.data?.data || []}
           columns={[
             {
-              field: 'user',
-              headerName: 'User',
-              sortable: false,
+              field: 'name',
+              headerName: 'Name',
               flex: 1,
               renderCell: ({ row }) => (
                 <Box display="flex" alignItems="center" justifyContent="center">
-                  {row.user.name}
+                  {row?.name}
                 </Box>
               ),
             },
             {
-              field: 'createdAt',
-              headerName: 'Creation Date',
+              field: 'email',
+              headerName: 'Email',
               flex: 0.8,
-              renderCell: ({ row }) =>
-                format(new Date(Date.parse(row?.createdAt)), 'MM/dd/yyyy'),
+              renderCell: ({ row }) => (
+                <Box display="flex" alignItems="center" justifyContent="center">
+                  {row?.email}
+                </Box>
+              ),
             },
             {
               field: 'status',
@@ -62,8 +60,8 @@ const ApplicationResponses = () => {
               flex: 0.5,
               renderCell: ({ row }) => (
                 <Chip
-                  label={row?.status?.toUpperCase()}
-                  color="warning"
+                  label={row?.active ? 'ACTIVE' : 'DEACTIVE'}
+                  color={row?.active ? 'success' : 'error'}
                   variant="filled"
                 />
               ),
@@ -78,9 +76,12 @@ const ApplicationResponses = () => {
                   <IconButton
                     size="large"
                     color="primary"
-                    aria-label="responseDetail"
+                    aria-label="userDetail"
                     onClick={() => {
-                      createModal('responseDetail', { ...row, application });
+                      createModal('userDetail', {
+                        user: { ...row },
+                        token: token,
+                      });
                     }}
                   >
                     <PreviewIcon />
@@ -99,4 +100,4 @@ const ApplicationResponses = () => {
   );
 };
 
-export default ApplicationResponses;
+export default UserList;

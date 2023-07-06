@@ -25,7 +25,7 @@ router.patch(
 );
 router.delete('/deleteMe', userController.deleteMe);
 
-router.use(authController.restrictTo(permToPerform));
+//router.use(authController.restrictTo(permToPerform));
 
 router
   .route('/')

@@ -1,6 +1,7 @@
 import ApplicationSettings from 'modals/ApplicationSettings';
 import NewApplication from 'modals/NewApplication';
 import ResponseDetail from 'modals/ResponseDetail';
+import UserDetail from 'modals/UserDetail';
 
 const modalData = [
   {
@@ -14,6 +15,10 @@ const modalData = [
   {
     name: 'responseDetail',
     element: ResponseDetail,
+  },
+  {
+    name: 'userDetail',
+    element: UserDetail,
   },
 ];
 

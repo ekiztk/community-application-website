@@ -1,13 +1,14 @@
 import DashboardSidebar from 'components/ui/dashboard/DashboardSidebar';
 import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 const Dashboard = () => {
   const [isSidebar, setIsSidebar] = useState(true);
   return (
     <div className="relative flex">
       <DashboardSidebar isSidebar={isSidebar} />
-      <main className="content">
-        <h1>deneme</h1>
+      <main className="w-full h-full m-2 md:m-8 overflow-x-hidden">
+        <Outlet />
       </main>
     </div>
   );
