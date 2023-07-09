@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import storage from 'redux-persist/lib/storage';
+import storage from 'reduxjs-toolkit-persist/lib/storage';
 import {
   persistReducer,
   persistStore,
@@ -11,12 +11,13 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storageSession from 'redux-persist/lib/storage/session';
+import storageSession from 'reduxjs-toolkit-persist/lib/storage/session';
 
 import {
   applicationReducer,
   updateApplication,
   setApplication,
+  setCollaborators,
   addQuestion,
   updateQuestion,
   deleteQuestion,
@@ -33,7 +34,8 @@ import { modalReducer, append, destroy, destroyAll } from './slices/modalSlice';
 
 const rootPersistConfig = {
   key: 'root',
-  storage: storage,
+  version: 1,
+  storage: storageSession,
 };
 
 const applicationPersistConfig = {
@@ -41,10 +43,15 @@ const applicationPersistConfig = {
   storage: storageSession,
 };
 
+const modalPersistConfig = {
+  key: 'modal',
+  storage: storageSession,
+};
+
 const rootReducer = combineReducers({
   application: persistReducer(applicationPersistConfig, applicationReducer),
   auth: authReducer,
-  modal: modalReducer,
+  modal: persistReducer(modalPersistConfig, modalReducer),
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -64,6 +71,7 @@ export {
   store,
   setApplication,
   updateApplication,
+  setCollaborators,
   addQuestion,
   updateQuestion,
   deleteQuestion,

@@ -9,6 +9,7 @@ const initialState = {
     name: '',
     slug: '',
     questions: [],
+    collaborators: [],
     startDate: '',
     description: '',
     deadlineDate: '',
@@ -28,6 +29,7 @@ const applicationSlice = createSlice({
       state.data.slug = action.payload.slug;
       state.data.description = action.payload.description;
       state.data.questions = [...action.payload.questions] || [];
+      state.data.collaborators = [...action.payload.collaborators] || [];
       state.data.startDate = action.payload.startDate;
       state.data.deadlineDate = action.payload.deadlineDate;
       state.data.pendingResponsesQuantity =
@@ -35,6 +37,9 @@ const applicationSlice = createSlice({
     },
     updateApplication: (state, action) => {
       state.data = { ...state.data, ...action.payload };
+    },
+    setCollaborators: (state, action) => {
+      state.data.collaborators = [...action.payload];
     },
     addQuestion: (state, action) => {
       state.data.questions = [...state.data.questions, { ...action.payload }];
@@ -171,6 +176,7 @@ const applicationSlice = createSlice({
 export const {
   setApplication,
   updateApplication,
+  setCollaborators,
   addQuestion,
   updateQuestion,
   deleteQuestion,

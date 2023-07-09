@@ -11,7 +11,6 @@ import ModalHeader from 'components/modal/ModalHeader';
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { updateApplication, removeApplication } from 'store';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -32,7 +31,6 @@ const ApplicationSettings = ({ data, close }) => {
 
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
 
   const handleUpdateApplication = () => {
     setIsUpdating(true);
@@ -81,8 +79,8 @@ const ApplicationSettings = ({ data, close }) => {
           isLoading: false,
           autoClose: true,
         });
+        navigateAfterDeletion();
         close();
-        //navigate('/applications/edit', { replace: true });
       })
       .catch((error) => {
         toast.update('deleteMessage', {
@@ -126,7 +124,6 @@ const ApplicationSettings = ({ data, close }) => {
             name="deadlineDate"
             value={deadlineDate}
             onChange={(e) => setDeadlineDate(e.target.value)}
-            minDate={new Date()}
             fullWidth
           />
         </LocalizationProvider>
@@ -143,7 +140,7 @@ const ApplicationSettings = ({ data, close }) => {
           </Typography>
           <Box
             display="flex"
-            flexDirection="row"
+            flexDirection="column"
             justifyContent="center"
             alignItems="center"
             gap={1}
@@ -160,7 +157,7 @@ const ApplicationSettings = ({ data, close }) => {
             <IconButton
               onClick={handleDeleteApplication}
               color="error"
-              className="h-full"
+              className="w-full"
               disabled={nameValidation.trim() === '' || nameValidation !== name}
             >
               <DeleteIcon />

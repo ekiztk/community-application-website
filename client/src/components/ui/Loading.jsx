@@ -4,7 +4,10 @@ import { CircularProgress, Alert, Backdrop } from '@mui/material';
 const Loading = ({ loading, error, className }) => {
   return (
     <Backdrop
-      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{
+        color: '#fff',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+      }}
       className={className}
       open={loading || error ? true : false}
     >

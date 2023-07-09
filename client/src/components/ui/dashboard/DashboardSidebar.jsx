@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  sidebarClasses,
+  menuClasses,
+} from 'react-pro-sidebar';
 import { Box, IconButton, Typography, Paper } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
@@ -32,7 +38,7 @@ const DashboardSidebar = () => {
   return (
     <Paper elevation={3}>
       <Sidebar
-        className="min-h-screen"
+        className="min-h-screen !border-none"
         backgroundColor="transparent"
         collapsed={isCollapsed}
       >
@@ -41,8 +47,8 @@ const DashboardSidebar = () => {
           menuItemStyles={{
             button: {
               '&:hover': {
-                backgroundColor: 'green',
-                color: 'white',
+                backgroundColor: 'transparent',
+                border: '1px solid green',
               },
             },
           }}

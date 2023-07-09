@@ -5,10 +5,8 @@ import ApplicationHeader from 'components/ui/application/ApplicationHeader';
 import QuestionBox from 'components/ui/question/QuestionBox';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 
 const ResponseDetail = ({ data, close }) => {
-  const token = useSelector((state) => state.auth.token);
   const [isSendingResponse, setIsSendingResponse] = useState(false);
   const [sendingResponseError, setSendingResponseError] = useState(null);
 
@@ -24,7 +22,7 @@ const ResponseDetail = ({ data, close }) => {
         {
           status,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${data?.token}` } }
       );
       toast.update('updateMessage', {
         render: `The response has been ${status.toUpperCase()}.`,

@@ -14,6 +14,7 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
+//signup istek işlemleri axios ve try catch ile değişecek
 
 const registerSchema = yup.object().shape({
   name: yup.string().min(4, 'Too Short!').required('Name is required!'),

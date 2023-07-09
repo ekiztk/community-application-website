@@ -18,7 +18,9 @@ const ApplicationBox = ({ item, showEdit }) => {
       className="p-4 text-center md:p-8 auto-rows-auto auto-cols-auto"
     >
       <CardContent>
-        <Typography variant="h4">{item?.name}</Typography>
+        <Typography variant="h4" component="h4">
+          {item?.name}
+        </Typography>
         <Typography variant="body2">
           {item?.description?.length > 160
             ? item.description.slice(0, 160) + '...'

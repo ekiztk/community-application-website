@@ -7,11 +7,13 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { useState } from 'react';
 import { createModal } from 'hooks/modal';
 import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
 
 const ApplicationResponses = () => {
   const { applicationId } = useParams();
   const location = useLocation();
   const application = location.state;
+  const token = useSelector((state) => state.auth.token);
 
   const [pageSize, setPageSize] = useState(5);
 
@@ -80,7 +82,11 @@ const ApplicationResponses = () => {
                     color="primary"
                     aria-label="responseDetail"
                     onClick={() => {
-                      createModal('responseDetail', { ...row, application });
+                      createModal('responseDetail', {
+                        ...row,
+                        application,
+                        token: token,
+                      });
                     }}
                   >
                     <PreviewIcon />

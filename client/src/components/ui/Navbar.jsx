@@ -21,7 +21,7 @@ import { setLogout } from 'store';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ChevronLeft } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -97,7 +97,7 @@ const Navbar = () => {
           <Link to="/auth/login">Log In</Link>
         </Button>
 
-        <Button variant="contained">
+        <Button variant="contained" color="success">
           <Link to="/auth/signup">Sign Up</Link>
         </Button>
       </>
@@ -178,8 +178,9 @@ const Navbar = () => {
           open={open}
         >
           <DrawerHeader>
+            <span className="flex-1 text-left">Deneme</span>
             <IconButton onClick={() => setOpen(!open)}>
-              <ChevronLeft />
+              <CloseIcon />
             </IconButton>
           </DrawerHeader>
           <Divider />

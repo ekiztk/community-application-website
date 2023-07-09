@@ -25,7 +25,7 @@ const EditApplication = () => {
 
   const dispatch = useDispatch();
   const application = useSelector((state) => state.application.data);
-  console.log(application);
+  //console.log(application);
 
   const handleAddQuestionBox = () => {
     dispatch(
@@ -48,9 +48,9 @@ const EditApplication = () => {
     <Box sx={{ height: '100%' }}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Edit {application?.name}</title>
+        <title>{application?.name}</title>
       </Helmet>
-      <ApplicationEditBar />
+      <ApplicationEditBar application={application} />
       <Box
         display="flex"
         flexDirection="column"

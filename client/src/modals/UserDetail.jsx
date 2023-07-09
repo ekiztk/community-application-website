@@ -1,12 +1,9 @@
 import ModalHeader from 'components/modal/ModalHeader';
 import React, { useState } from 'react';
 import {
-  Box,
   TextField,
   Button,
-  Typography,
   Stack,
-  IconButton,
   FormControlLabel,
   Switch,
 } from '@mui/material';
@@ -27,7 +24,7 @@ const UserDetail = ({ data, close }) => {
         toastId: 'updateMessage',
       });
       //send the response
-      const a = await axios.patch(
+      await axios.patch(
         `${import.meta.env.VITE_API_URL}/users/${data?.user?.id}`,
         {
           active: Boolean(status),
@@ -53,7 +50,6 @@ const UserDetail = ({ data, close }) => {
       setIsSendingResponse(false);
     }
   };
-  console.log(data.user);
 
   return (
     <>

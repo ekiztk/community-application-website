@@ -58,7 +58,7 @@ const applicationSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    executives: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
+    collaborators: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
   },
   {
     toJSON: { virtuals: true },
@@ -67,6 +67,14 @@ const applicationSchema = new mongoose.Schema(
 );
 
 applicationSchema.index({ slug: 1 });
+
+applicationSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'collaborators',
+    select: 'name email photo'
+  });
+  next();
+});
 
 //Virtual populate to get relevant responses
 applicationSchema.virtual('responses', {

@@ -2,6 +2,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AppsIcon from '@mui/icons-material/Apps';
+import GroupIcon from '@mui/icons-material/Group';
 import {
   Typography,
   AppBar,
@@ -13,15 +14,19 @@ import { useSelector } from 'react-redux';
 import { createModal } from 'hooks/modal';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const ApplicationEditBar = () => {
-  const application = useSelector((state) => state.application.data);
+const ApplicationEditBar = ({ application }) => {
   const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingError, setUpdatingError] = useState(null);
+
+  const navigateToApplications = () => {
+    navigate('/applications', { replace: true });
+  };
 
   const promiseOfSaving = () => {
     return axios
@@ -66,6 +71,22 @@ const ApplicationEditBar = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {application.name}
         </Typography>
+        <Tooltip title="Collaborators">
+          <IconButton
+            size="large"
+            color="inherit"
+            aria-label="collaborators"
+            onClick={() => {
+              createModal('applicationCollaborators', {
+                id: application.id,
+                name: application.name,
+                token: token,
+              });
+            }}
+          >
+            <GroupIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Settings">
           <IconButton
             size="large"
@@ -77,6 +98,7 @@ const ApplicationEditBar = () => {
                 name: application.name,
                 startDate: application.startDate,
                 deadlineDate: application.deadlineDate,
+                navigateAfterDeletion: navigateToApplications,
               });
             }}
           >

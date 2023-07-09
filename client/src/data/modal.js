@@ -1,3 +1,4 @@
+import ApplicationCollaborators from 'modals/ApplicationCollaborators';
 import ApplicationSettings from 'modals/ApplicationSettings';
 import NewApplication from 'modals/NewApplication';
 import ResponseDetail from 'modals/ResponseDetail';
@@ -19,6 +20,10 @@ const modalData = [
   {
     name: 'userDetail',
     element: UserDetail,
+  },
+  {
+    name: 'applicationCollaborators',
+    element: ApplicationCollaborators,
   },
 ];
 

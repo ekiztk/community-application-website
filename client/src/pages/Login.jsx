@@ -15,6 +15,7 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
+//login istek işlemleri axios ve try catch ile değişecek
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Invalid Email!').required('Email is required!'),

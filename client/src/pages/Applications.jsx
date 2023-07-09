@@ -26,7 +26,7 @@ const Applications = ({ showEdit }) => {
       </Helmet>
       <Navbar />
       <Box className="relative p-4 md:p-8 h-full">
-        <Typography variant="h1" component="h1" className="text-center">
+        <Typography variant="h2" component="h2" className="text-center">
           Applications
         </Typography>
         <Loading loading={loading} error={error?.message} />
