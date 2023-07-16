@@ -7,6 +7,29 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const ResponseDetail = ({ data, close }) => {
+  if (data.readOnly) {
+    return (
+      <>
+        <ModalHeader title={` ${data?.user?.name}'s Response`} />
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="center"
+          gap={2}
+          className="py-2 md:py-4 max-h-[72vh]"
+          overflow="auto"
+        >
+          <ApplicationHeader application={data?.application} />
+          {data?.answers &&
+            data.answers.map((q, index) => {
+              return <QuestionBox key={q.id} question={q} disabled />;
+            })}
+        </Box>
+      </>
+    );
+  }
+
   const [isSendingResponse, setIsSendingResponse] = useState(false);
   const [sendingResponseError, setSendingResponseError] = useState(null);
 

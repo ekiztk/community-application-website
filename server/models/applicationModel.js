@@ -54,10 +54,10 @@ const applicationSchema = new mongoose.Schema(
       //     'Deadline date {{VALUE}} should be greater or equal than start date'
       // }
     },
-    pendingResponsesQuantity: {
-      type: Number,
-      default: 0
-    },
+    // pendingResponsesQuantity: {
+    //   type: Number,
+    //   default: 0
+    // },
     collaborators: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
   },
   {

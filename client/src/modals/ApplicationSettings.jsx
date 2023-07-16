@@ -79,7 +79,7 @@ const ApplicationSettings = ({ data, close }) => {
           isLoading: false,
           autoClose: true,
         });
-        navigateAfterDeletion();
+        data.navigateAfterDeletion();
         close();
       })
       .catch((error) => {

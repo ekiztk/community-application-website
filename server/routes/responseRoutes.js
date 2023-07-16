@@ -3,6 +3,7 @@ const responseController = require('./../controllers/responseController');
 const authController = require('./../controllers/authController');
 
 //:applicationId/responses
+//:userId/responses
 const router = express.Router({ mergeParams: true });
 
 router.post('/hasResponse', responseController.canApply);

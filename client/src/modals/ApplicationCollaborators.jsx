@@ -27,6 +27,7 @@ import { setCollaborators } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 
 const UserBox = ({ user, isCollaborator, action, disabled }) => {
+  console.log(user);
   return (
     <ListItem
       key={user?._id}
@@ -42,7 +43,16 @@ const UserBox = ({ user, isCollaborator, action, disabled }) => {
     >
       <ListItemButton>
         <ListItemAvatar>
-          <Avatar alt={`Avatar n°${user?.name}`} src={profileImage} />
+          <Avatar
+            alt={`Avatar n°${user?.name}`}
+            src={
+              user?.photo
+                ? `${import.meta.env.VITE_BASE_API_URL}/assets/img/users/${
+                    user?.photo
+                  }`
+                : profileImage
+            }
+          />
         </ListItemAvatar>
         <ListItemText
           id={`checkbox-list-secondary-label-${user?._id}`}

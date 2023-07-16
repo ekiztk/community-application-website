@@ -44,6 +44,9 @@ responseSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'user',
     select: 'name photo'
+  }).populate({
+    path: 'application',
+    select: '-collaborators'
   });
   next();
 });

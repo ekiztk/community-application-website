@@ -16,16 +16,22 @@ const QuestionTypeDropdown = ({ questionId }) => {
   };
 
   const isDarkTheme = useTheme().palette.mode === 'dark';
-  console.log(isDarkTheme);
+
   return (
     <>
       <select
         name="questionType"
         onChange={handleTypeChange}
         value={type}
-        className={`block w-full p-2.5 border ${
+        style={{
+          backgroundImage: `${
+            isDarkTheme &&
+            'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))'
+          }`,
+        }}
+        className={`block w-full p-2.5 border mr-4 ${
           isDarkTheme
-            ? 'bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+            ? 'bg-[#121212] border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
             : 'bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500'
         }   `}
       >

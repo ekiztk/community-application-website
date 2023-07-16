@@ -45,11 +45,23 @@ const Navbar = () => {
       return !isMobile ? (
         <>
           <Button color="inherit">
+            <Link to="/profile/myResponses">My Responses</Link>
+          </Button>
+          <Button color="inherit">
             <Link
-              to="/profile"
-              className="flex flex-row justify-center items-center cursor-pointer whitespace-nowrap"
+              to={`/profile/update/${user?.id}`}
+              className="flex flex-row justify-center items-center gap-2 cursor-pointer whitespace-nowrap"
             >
-              <Avatar alt="profile photo" src={profileImage} />
+              <Avatar
+                alt={user?.name}
+                src={
+                  user?.photo
+                    ? `${import.meta.env.VITE_BASE_API_URL}/assets/img/users/${
+                        user?.photo
+                      }`
+                    : profileImage
+                }
+              />
               {user?.name}
             </Link>
           </Button>
@@ -68,9 +80,18 @@ const Navbar = () => {
       ) : (
         <>
           <ListItem key="Profile" disablePadding>
-            <ListItemButton component={Link} to="/profile">
+            <ListItemButton component={Link} to={`/profile/update/${user?.id}`}>
               <ListItemIcon>
-                <Avatar alt="profile photo" src={profileImage} />
+                <Avatar
+                  alt={user?.name}
+                  src={
+                    user?.photo
+                      ? `${
+                          import.meta.env.VITE_BASE_API_URL
+                        }/assets/img/users/${user?.photo}`
+                      : profileImage
+                  }
+                />
               </ListItemIcon>
               <ListItemText primary={user?.name} />
             </ListItemButton>

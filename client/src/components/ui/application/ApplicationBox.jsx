@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { format } from 'date-fns';
 
-const ApplicationBox = ({ item, showEdit }) => {
+const ApplicationBox = ({ item, showEdit, showResponse }) => {
   return (
     <Card
       key={item.id}
@@ -48,7 +48,7 @@ const ApplicationBox = ({ item, showEdit }) => {
             <Link to={`/applications/${item.slug}`}>Apply</Link>
           </Button>
 
-          {showEdit && (
+          {showResponse && (
             <>
               <Button variant="contained" color="secondary">
                 <Link
@@ -58,6 +58,10 @@ const ApplicationBox = ({ item, showEdit }) => {
                   Responses
                 </Link>
               </Button>
+            </>
+          )}
+          {showEdit && (
+            <>
               <Button variant="contained" color="success">
                 <Link to={`/applications/edit/${item.id}`}>Edit</Link>
               </Button>

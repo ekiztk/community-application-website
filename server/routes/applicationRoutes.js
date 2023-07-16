@@ -7,8 +7,12 @@ const router = express.Router();
 
 const permToPerform = 'editApplication';
 
-//nested route to get all revelant responses-bunda kaldık
+//nested route to get all revelant responses
 router.use('/:applicationId/responses', responseRouter);
+
+router
+  .route('/:id/isCollaborator')
+  .post(authController.protect, applicationController.isCollaborator);
 
 router
   .route('/')

@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from 'store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { mainLogo } from 'assets/img';
 import { Helmet } from 'react-helmet';
 import {
@@ -15,6 +15,8 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 //login istek işlemleri axios ve try catch ile değişecek
 
 const loginSchema = yup.object().shape({
@@ -34,30 +36,42 @@ const Login = () => {
   const user = useSelector((state) => state.auth.user);
   const isAuth = Boolean(useSelector((state) => state.auth.token));
 
-  const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/users/login`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      }
-    );
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
+  const [isSendingResponse, setIsSendingResponse] = useState(false);
+
+  const handleLoginFormSubmit = async (values, onSubmitProps) => {
+    try {
+      setIsSendingResponse(true);
+      toast.loading('Please wait...', {
+        toastId: 'loginMessage',
+      });
+      //send the response
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        values
+      );
+      onSubmitProps.resetForm();
       dispatch(
         setLogin({
-          user: loggedIn.data.user,
-          token: loggedIn.token,
+          user: response.data.data.user,
+          token: response.data.token,
         })
       );
-      navigate('/');
+      toast.update('loginMessage', {
+        render: 'You are logged in.',
+        type: 'success',
+        isLoading: false,
+        autoClose: true,
+      });
+    } catch (error) {
+      toast.update('loginMessage', {
+        render: error?.response?.data?.message || error?.message,
+        type: 'error',
+        isLoading: false,
+        autoClose: true,
+      });
+    } finally {
+      setIsSendingResponse(false);
     }
-  };
-
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    await login(values, onSubmitProps);
   };
 
   useEffect(() => {
@@ -86,7 +100,7 @@ const Login = () => {
         </Typography>
 
         <Formik
-          onSubmit={handleFormSubmit}
+          onSubmit={handleLoginFormSubmit}
           initialValues={initialValuesLogin}
           validationSchema={loginSchema}
         >
@@ -134,7 +148,12 @@ const Login = () => {
                   >
                     Forgot password?
                   </Link>
-                  <Button type="submit" variant="contained" color="success">
+                  <Button
+                    disabled={isSendingResponse}
+                    type="submit"
+                    variant="contained"
+                    color="success"
+                  >
                     Log In
                   </Button>
                   <Typography variant="body2" className="pt-4 mb-0">

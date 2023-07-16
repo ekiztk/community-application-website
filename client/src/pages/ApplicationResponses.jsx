@@ -9,10 +9,13 @@ import { createModal } from 'hooks/modal';
 import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
 
+//burada da kullancıdı doğrulaması yapılacak '/:id/isCollaborator' ile
 const ApplicationResponses = () => {
   const { applicationId } = useParams();
   const location = useLocation();
   const application = location.state;
+
+  const userId = useSelector((state) => state.auth.user.id);
   const token = useSelector((state) => state.auth.token);
 
   const [pageSize, setPageSize] = useState(5);

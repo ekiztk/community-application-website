@@ -6,13 +6,22 @@ import { createModal } from 'hooks/modal';
 import Navbar from 'components/ui/Navbar';
 import ApplicationBox from 'components/ui/application/ApplicationBox';
 import Loading from 'components/ui/Loading';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 //pagination needed
-const Applications = ({ showEdit }) => {
+const Applications = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, loading, error, reFetch } = useFetch({
     url: `${import.meta.env.VITE_API_URL}/applications`,
   });
+
+  const user = useSelector((state) => state.auth.user);
+
+  const [showEdit, setShowEdit] = useState(
+    user?.role?.permissions?.some((value) => value === 'editApplication') ||
+      false
+  );
 
   if (loading || error) {
     return <Loading loading={loading} error={error?.message} />;
@@ -47,13 +56,19 @@ const Applications = ({ showEdit }) => {
           {
             <>
               {data?.data?.data?.length > 0 &&
-                data?.data?.data.map((item) => (
-                  <ApplicationBox
-                    key={item.id}
-                    item={item}
-                    showEdit={showEdit}
-                  />
-                ))}
+                data?.data?.data.map((item) => {
+                  const showResponse = item.collaborators.some(
+                    (value) => value.id === user?.id
+                  );
+                  return (
+                    <ApplicationBox
+                      key={item.id}
+                      item={item}
+                      showEdit={showEdit}
+                      showResponse={showEdit || showResponse}
+                    />
+                  );
+                })}
             </>
           }
         </div>

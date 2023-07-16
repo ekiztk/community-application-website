@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,10 +14,11 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
-//signup istek işlemleri axios ve try catch ile değişecek
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const registerSchema = yup.object().shape({
-  name: yup.string().min(4, 'Too Short!').required('Name is required!'),
+  name: yup.string().min(4, 'Name is too short!').required('Name is required!'),
   email: yup.string().email('Invalid Email!').required('Email is required!'),
   password: yup
     .string()
@@ -39,34 +40,45 @@ const initialValuesRegister = {
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isSendingResponse, setIsSendingResponse] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const isAuth = Boolean(useSelector((state) => state.auth.token));
 
-  const register = async (values, onSubmitProps) => {
-    const savedUserResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/users/signup`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      }
-    );
-    const savedUser = await savedUserResponse.json();
-    //onSubmitProps.resetForm();
-    if (savedUser) {
+  const handleSignupFormSubmit = async (values, onSubmitProps) => {
+    try {
+      setIsSendingResponse(true);
+      toast.loading('Please wait...', {
+        toastId: 'signupMessage',
+      });
+      //send the response
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/signup`,
+        values
+      );
+      onSubmitProps.resetForm();
       dispatch(
         setLogin({
-          user: savedUser.data.user,
-          token: savedUser.token,
+          user: response.data.data.user,
+          token: response.data.token,
         })
       );
-      navigate('/');
+      toast.update('signupMessage', {
+        render: 'You are logged in.',
+        type: 'success',
+        isLoading: false,
+        autoClose: true,
+      });
+    } catch (error) {
+      toast.update('signupMessage', {
+        render: error?.response?.data?.message || error?.message,
+        type: 'error',
+        isLoading: false,
+        autoClose: true,
+      });
+    } finally {
+      setIsSendingResponse(false);
     }
-  };
-
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    await register(values, onSubmitProps);
   };
 
   useEffect(() => {
@@ -90,12 +102,12 @@ const Signup = () => {
           src={mainLogo}
           alt="logo"
         />
-        <Typography variant="h3" className="mb-4 md:mb-8">
-          Welcome !
+        <Typography variant="h3" className="pb-2 md:pb-4">
+          Sign Up
         </Typography>
 
         <Formik
-          onSubmit={handleFormSubmit}
+          onSubmit={handleSignupFormSubmit}
           initialValues={initialValuesRegister}
           validationSchema={registerSchema}
         >
@@ -110,7 +122,7 @@ const Signup = () => {
             resetForm,
           }) => (
             <form onSubmit={handleSubmit}>
-              <Stack alignItems="center" spacing={4} direction="column">
+              <Stack alignItems="center" spacing={2} direction="column">
                 <TextField
                   id="name"
                   name="name"
@@ -168,6 +180,7 @@ const Signup = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    disabled={isSendingResponse}
                   >
                     Register
                   </Button>

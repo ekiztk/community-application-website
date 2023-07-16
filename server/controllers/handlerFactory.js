@@ -72,6 +72,7 @@ exports.getAll = Model =>
     let filter = {};
     if (req.params.applicationId)
       filter = { application: req.params.applicationId };
+    else if (req.params.userId) filter = { user: req.params.userId };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()

@@ -17,6 +17,9 @@ import ApplyApplication from 'pages/ApplyApplication';
 import Dashboard from 'pages/dashboard/Dashboard';
 import ApplicationResponses from 'pages/ApplicationResponses';
 import UserList from 'pages/dashboard/UserList';
+import UpdateProfile from 'pages/UpdateProfile';
+import MyResponses from 'pages/MyResponses';
+import PrivateRoute from 'components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -33,19 +36,47 @@ const router = createBrowserRouter([
   },
   {
     path: '/applications',
-    element: <Applications showEdit />,
+    element: <Applications />,
   },
   {
     path: '/applications/edit/:applicationId',
-    element: <EditApplication />,
+    element: (
+      <PrivateRoute requiredPermissions={['editApplication']}>
+        <EditApplication />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/applications/:applicationSlug',
-    element: <ApplyApplication />,
+    element: (
+      <PrivateRoute>
+        <ApplyApplication />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/applications/:applicationId/responses',
-    element: <ApplicationResponses />,
+    element: (
+      <PrivateRoute>
+        <ApplicationResponses />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/profile/update/:userId',
+    element: (
+      <PrivateRoute>
+        <UpdateProfile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: 'profile/myResponses',
+    element: (
+      <PrivateRoute>
+        <MyResponses />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/dashboard',

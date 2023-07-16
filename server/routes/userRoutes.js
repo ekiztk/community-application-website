@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
+const responseRouter = require('./responseRoutes');
 
 const router = express.Router();
 const permToPerform = 'editUser';
@@ -14,6 +15,9 @@ router.patch('/resetPassword/:token', authController.resetPassword);
 
 // Protect all routes after this middleware
 router.use(authController.protect);
+
+//nested route to get all revelant responses
+router.use('/:userId/responses', responseRouter);
 
 router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);

@@ -169,7 +169,7 @@ const QuestionBox = ({ question, showEdit, disabled }) => {
             </Grid>
             <Divider orientation="vertical" variant="middle" flexItem></Divider>
             <Grid item>
-              <IconButton size="large" color="inherit">
+              <IconButton size="large" color="error">
                 <DeleteIcon onClick={handleDeleteQuestion} />
               </IconButton>
             </Grid>
