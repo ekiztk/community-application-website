@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from 'store';
 import { useEffect, useState } from 'react';
 import { mainLogo } from 'assets/img';
-import { Helmet } from 'react-helmet';
 import {
   Paper,
   TextField,
@@ -17,7 +16,7 @@ import {
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-//login istek işlemleri axios ve try catch ile değişecek
+import SEO from 'components/SEO';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Invalid Email!').required('Email is required!'),
@@ -82,10 +81,12 @@ const Login = () => {
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Login</title>
-      </Helmet>
+      <SEO
+        title="Log In"
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Paper
         elevation={12}
         className="flex flex-col gap-2 items-center min-w-[92%] md:min-w-[32%] justify-center p-2 md:p-12"
@@ -144,7 +145,7 @@ const Login = () => {
                 <Box component="div" className="text-center">
                   <Link
                     href="#"
-                    className="block mb-4 text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
+                    className="block mb-4 text-red-600 hover:text-red-700 focus:text-red-700 active:text-blue-800 duration-200 transition ease-in-out"
                   >
                     Forgot password?
                   </Link>
@@ -152,7 +153,7 @@ const Login = () => {
                     disabled={isSendingResponse}
                     type="submit"
                     variant="contained"
-                    color="success"
+                    color="primary"
                   >
                     Log In
                   </Button>
@@ -160,9 +161,9 @@ const Login = () => {
                     {"Don't have an account? "}
                     <Link
                       to="/auth/signup"
-                      className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
+                      className="text-green-600 hover:text-green-700 focus:text-green-700 transition duration-200 ease-in-out"
                     >
-                      Register
+                      Sign Up
                     </Link>
                   </Typography>
                 </Box>

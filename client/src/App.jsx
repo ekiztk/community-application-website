@@ -6,6 +6,7 @@ import { darkModeIcon, lightModeIcon } from './assets/img';
 import { useModals } from 'hooks/modal';
 import Modal from 'modals/Modal';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Landing from 'pages/Landing';
@@ -115,32 +116,34 @@ function App() {
 
   return (
     <>
-      <ThemeProvider
-        theme={isDarkTheme ? createTheme(dark) : createTheme(light)}
-      >
-        <CssBaseline />
-        <RouterProvider router={router} />
-        <>
-          {modals.length > 0 && <Modal />}
-          <div
-            className="fixed cursor-pointer z-50 bottom-2 right-2 h-10 w-10"
-            onClick={changeTheme}
-          >
-            {isDarkTheme ? (
-              <img src={lightModeIcon} />
-            ) : (
-              <img src={darkModeIcon} />
-            )}
-          </div>
-        </>
-      </ThemeProvider>
-      <ToastContainer
-        position="top-right"
-        pauseOnHover
-        hideProgressBar={false}
-        autoClose={4000}
-        theme={isDarkTheme ? 'dark' : 'light'}
-      />
+      <HelmetProvider>
+        <ThemeProvider
+          theme={isDarkTheme ? createTheme(dark) : createTheme(light)}
+        >
+          <CssBaseline />
+          <RouterProvider router={router} />
+          <>
+            {modals.length > 0 && <Modal />}
+            <div
+              className="fixed cursor-pointer z-50 bottom-2 right-2 h-10 w-10"
+              onClick={changeTheme}
+            >
+              {isDarkTheme ? (
+                <img src={lightModeIcon} />
+              ) : (
+                <img src={darkModeIcon} />
+              )}
+            </div>
+          </>
+        </ThemeProvider>
+        <ToastContainer
+          position="top-right"
+          pauseOnHover
+          hideProgressBar={false}
+          autoClose={4000}
+          theme={isDarkTheme ? 'dark' : 'light'}
+        />
+      </HelmetProvider>
     </>
   );
 }

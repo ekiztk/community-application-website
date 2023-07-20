@@ -55,7 +55,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Role'
+      ref: 'Role',
+      default: null
       //required: [true, 'An account must have a role']
     }
   },

@@ -1,21 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  mode: "light",
+  mode: 'light',
   user: null,
   token: null,
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     setMode: (state) => {
-      state.mode = state.mode === "light" ? "dark" : "light";
+      state.mode = state.mode === 'light' ? 'dark' : 'light';
     },
     setLogin: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+    },
+    updateUser: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
     },
     setLogout: (state) => {
       state.user = null;
@@ -24,5 +27,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setMode, setLogin, setLogout } = authSlice.actions;
+export const { setMode, setLogin, setLogout, updateUser } = authSlice.actions;
 export const authReducer = authSlice.reducer;

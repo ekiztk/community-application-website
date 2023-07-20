@@ -29,7 +29,13 @@ import {
   setQuestionAnswer,
 } from './slices/applicationSlice';
 
-import { authReducer, setMode, setLogin, setLogout } from './slices/authSlice';
+import {
+  authReducer,
+  setMode,
+  setLogin,
+  setLogout,
+  updateUser,
+} from './slices/authSlice';
 import { modalReducer, append, destroy, destroyAll } from './slices/modalSlice';
 
 const rootPersistConfig = {
@@ -77,6 +83,7 @@ export {
   deleteQuestion,
   setMode,
   setLogin,
+  updateUser,
   setLogout,
   changeQuestionText,
   changeQuestionType,

@@ -21,8 +21,8 @@ const applicationSchema = new mongoose.Schema(
       type: String,
       required: [true, 'An application must have a description'],
       maxLength: [
-        240,
-        'An application description must have less or equal than 240 characters'
+        360,
+        'An application description must have less or equal than 360 characters'
       ],
       minLength: [
         10,

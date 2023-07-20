@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { createModal } from 'hooks/modal';
 import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import Navbar from 'components/ui/Navbar';
+import SEO from 'components/SEO';
 
 const MyResponses = () => {
   const token = useSelector((state) => state.auth.token);
@@ -27,10 +27,12 @@ const MyResponses = () => {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>My Responses</title>
-      </Helmet>
+      <SEO
+        title="My Responses"
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Navbar />
       <Box className="mx-2 mt-4 md:mx-12 flex justify-center items-center max-h-[92vh]">
         {data?.data?.data.length > 0 ? (

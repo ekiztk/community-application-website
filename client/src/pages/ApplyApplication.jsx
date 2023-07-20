@@ -7,12 +7,12 @@ import { fetchApplication } from 'store';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Loading from 'components/ui/Loading';
-import { Helmet } from 'react-helmet';
 import usePagination from 'hooks/usePagination';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import asyncSome from 'utils/asyncSome';
 import { toast } from 'react-toastify';
+import SEO from 'components/SEO';
 
 const ApplyApplication = () => {
   const [doFetchApplication, isLoading, loadingError] =
@@ -41,7 +41,7 @@ const ApplyApplication = () => {
     sliceCurrentPageRecords,
   ] = usePagination({
     totalCount: application?.questions?.length,
-    pageSize: 2,
+    pageSize: 3,
   });
 
   const handleSendResponse = async (event) => {
@@ -106,14 +106,14 @@ const ApplyApplication = () => {
     return <Loading loading={isLoading} error={loadingError?.message} />;
   }
 
-  console.log(application);
-
   return (
     <Box sx={{ height: '100%' }}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Apply for</title>
-      </Helmet>
+      <SEO
+        title={`Apply for ${application?.name}`}
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Box
         display="flex"
         flexDirection="column"
@@ -132,23 +132,27 @@ const ApplyApplication = () => {
             The application has no any question, please let us know.
           </Typography>
         )}
-        <Pagination
-          count={totalPageCount}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
-        {Math.ceil(totalPageCount / pageSize) !== currentPage && (
-          <Button
-            onClick={handleSendResponse}
-            variant="contained"
-            color="success"
-            endIcon={<SendIcon />}
-            disabled={isSendingResponse}
-          >
-            Send
-          </Button>
+
+        {application?.questions?.length > 0 && (
+          <Pagination
+            count={totalPageCount}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
         )}
+        {Math.ceil(totalPageCount / pageSize) !== currentPage &&
+          application?.questions?.length > 0 && (
+            <Button
+              onClick={handleSendResponse}
+              variant="contained"
+              color="success"
+              endIcon={<SendIcon />}
+              disabled={isSendingResponse}
+            >
+              Send
+            </Button>
+          )}
       </Box>
     </Box>
   );

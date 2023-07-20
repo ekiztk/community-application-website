@@ -9,9 +9,8 @@ import { Box, Typography } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ApplicationEditBar from 'components/ui/application/ApplicationEditBar';
 import ApplicationHeader from 'components/ui/application/ApplicationHeader';
-import { Helmet } from 'react-helmet';
 import Loading from 'components/ui/Loading';
-//üyelere yetki verme eklenecek
+import SEO from 'components/SEO';
 
 const EditApplication = () => {
   const [doFetchApplication, isLoading, loadingError] =
@@ -46,10 +45,12 @@ const EditApplication = () => {
 
   return (
     <Box sx={{ height: '100%' }}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{application?.name}</title>
-      </Helmet>
+      <SEO
+        title={application?.name}
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <ApplicationEditBar application={application} />
       <Box
         display="flex"

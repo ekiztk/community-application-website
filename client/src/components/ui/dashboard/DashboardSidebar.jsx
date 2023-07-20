@@ -127,7 +127,7 @@ const DashboardSidebar = () => {
             />
             <Item
               title="User Logs"
-              to="/dashboard/logs/user"
+              to="/workingInProgress"
               icon={<DvrIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -148,7 +148,7 @@ const DashboardSidebar = () => {
             />
             <Item
               title="FAQ"
-              to="/faq"
+              to="/workingInProgress"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -163,14 +163,14 @@ const DashboardSidebar = () => {
             </Typography>
             <Item
               title="Bar Chart"
-              to="/bar"
+              to="/workingInProgress"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Pie Chart"
-              to="/pie"
+              to="/workingInProgress"
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from 'store';
 import { mainLogo } from 'assets/img';
-import { Helmet } from 'react-helmet';
 import {
   Paper,
   TextField,
@@ -16,6 +15,7 @@ import {
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import SEO from 'components/SEO';
 
 const registerSchema = yup.object().shape({
   name: yup.string().min(4, 'Name is too short!').required('Name is required!'),
@@ -89,10 +89,12 @@ const Signup = () => {
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Signup</title>
-      </Helmet>
+      <SEO
+        title="Signup"
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Paper
         elevation={12}
         className="flex flex-col items-center min-w-[92%] md:min-w-[32%] justify-center p-2 md:p-12"
@@ -178,11 +180,11 @@ const Signup = () => {
                   <Button
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="success"
                     type="submit"
                     disabled={isSendingResponse}
                   >
-                    Register
+                    Sign Up
                   </Button>
                   <Typography variant="body2" className="pt-4 mb-0">
                     {'Have an account? '}

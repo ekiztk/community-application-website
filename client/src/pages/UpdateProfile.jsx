@@ -2,7 +2,6 @@ import {
   TextField,
   Button,
   Box,
-  Typography,
   Stack,
   Divider,
   Chip,
@@ -21,7 +20,8 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import Navbar from 'components/ui/Navbar';
 import { toast } from 'react-toastify';
 import { setLogin } from 'store';
-import { Helmet } from 'react-helmet';
+import { updateUser } from 'store';
+import SEO from 'components/SEO';
 
 const profileSchema = yup.object().shape({
   name: yup.string().min(4, 'Too Short!').required('Name is required!'),
@@ -54,11 +54,9 @@ const initialValuesSecurity = {
 const UpdateProfile = () => {
   const dispatch = useDispatch();
 
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
+  const [profilePhoto, setProfilePhoto] = useState(null);
 
   const [isSendingResponse, setIsSendingResponse] = useState(false);
   const [sendingResponseError, setSendingResponseError] = useState(null);
@@ -76,12 +74,7 @@ const UpdateProfile = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        dispatch(
-          setLogin({
-            user: response.data.data,
-            token: token,
-          })
-        );
+        dispatch(updateUser(response.data.data));
       } catch (error) {
         setLoadingError(error);
       } finally {
@@ -109,12 +102,7 @@ const UpdateProfile = () => {
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      dispatch(
-        setLogin({
-          user: response.data.user,
-          token: token,
-        })
-      );
+      dispatch(updateUser(response.data.user));
       toast.update('submitProfileMessage', {
         render: 'Your profile has been updated.',
         type: 'success',
@@ -186,10 +174,12 @@ const UpdateProfile = () => {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>My Profile</title>
-      </Helmet>
+      <SEO
+        title="My Profile"
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Navbar />
       <div className="relative w-full h-full flex flex-col gap-2 p-2 md:p-4 items-center justify-start">
         <Divider flexItem>
@@ -226,9 +216,14 @@ const UpdateProfile = () => {
                 >
                   <Avatar
                     alt={user?.name}
-                    src={`${
-                      import.meta.env.VITE_BASE_API_URL
-                    }/assets/img/users/${user?.photo}`}
+                    src={
+                      profilePhoto ||
+                      (user?.photo !== null &&
+                        `${
+                          import.meta.env.VITE_BASE_API_URL
+                        }/assets/img/users/${user?.photo}`) ||
+                      profileImage
+                    }
                     sx={{ width: 96, height: 96 }}
                   />
                   <Tooltip title="Update Photo">
@@ -248,8 +243,8 @@ const UpdateProfile = () => {
                     style={{ display: 'none' }}
                     accept="image/*"
                     onChange={(e) => {
-                      console.log(e.target.files[0]);
                       setFieldValue('photo', e.target.files[0]);
+                      setProfilePhoto(URL.createObjectURL(e.target.files[0]));
                     }}
                   />
                 </Box>

@@ -1,5 +1,4 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import useFetch from 'hooks/useFetch';
 import { Button, Typography, Box } from '@mui/material';
 import { createModal } from 'hooks/modal';
@@ -8,8 +7,10 @@ import ApplicationBox from 'components/ui/application/ApplicationBox';
 import Loading from 'components/ui/Loading';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import SEO from 'components/SEO';
 
-//pagination needed
+//yeni application için hata ve başarı mesajları ayarlanacak
+
 const Applications = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, loading, error, reFetch } = useFetch({
@@ -29,18 +30,20 @@ const Applications = () => {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Applications</title>
-      </Helmet>
+      <SEO
+        title="Applications"
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Navbar />
       <Box className="relative p-4 md:p-8 h-full">
         <Typography variant="h2" component="h2" className="text-center">
           Applications
         </Typography>
         <Loading loading={loading} error={error?.message} />
-        <div className="w-full flex justify-center gap-2 md:gap-4 items-center p-2 md:p-8">
-          {true && (
+        {showEdit && (
+          <div className="w-full flex justify-center gap-2 md:gap-4 items-center p-2 md:p-8">
             <Button
               variant="contained"
               color="success"
@@ -50,8 +53,8 @@ const Applications = () => {
             >
               Create New
             </Button>
-          )}
-        </div>
+          </div>
+        )}
         <div className="p-2 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-8">
           {
             <>

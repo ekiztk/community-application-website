@@ -2,21 +2,26 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, Typography, Tooltip, IconButton, Chip } from '@mui/material';
 import useFetch from 'hooks/useFetch';
 import Loading from 'components/ui/Loading';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PreviewIcon from '@mui/icons-material/Preview';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createModal } from 'hooks/modal';
 import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import SEO from 'components/SEO';
 
-//burada da kullancıdı doğrulaması yapılacak '/:id/isCollaborator' ile
+//tablolu kısımları halletmek kaldı
 const ApplicationResponses = () => {
   const { applicationId } = useParams();
   const location = useLocation();
   const application = location.state;
+  const [isCollaborator, setIsCollaborator] = useState(false);
 
-  const userId = useSelector((state) => state.auth.user.id);
+  const userId = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
+
+  const navigate = useNavigate();
 
   const [pageSize, setPageSize] = useState(5);
 
@@ -27,12 +32,45 @@ const ApplicationResponses = () => {
     token,
   });
 
-  if (loading || error) {
+  useEffect(() => {
+    const checkIfUserIsCollaborator = async () => {
+      try {
+        await axios.post(
+          `${
+            import.meta.env.VITE_API_URL
+          }/applications/${applicationId}/isCollaborator`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setIsCollaborator(true);
+      } catch (error) {
+        setIsCollaborator(false);
+        return navigate('/unauthorized', {
+          replace: true,
+          state: {
+            return_url: location.pathname + location.search,
+          },
+        });
+      }
+    };
+
+    checkIfUserIsCollaborator();
+  }, []);
+
+  if (loading || error || !isCollaborator) {
     return <Loading loading={loading} error={error?.message} />;
   }
 
   return (
     <Box>
+      <SEO
+        title={` Responses of ${application?.name}`}
+        description="desc"
+        name="Company name."
+        type="article"
+      />
       <Typography variant="h3" component="h3" className="text-center">
         Responses of {application?.name}
       </Typography>

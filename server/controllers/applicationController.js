@@ -11,7 +11,6 @@ exports.isCollaborator = catchAsync(async (req, res, next) => {
   });
 
   const doc = await query;
-  console.log(doc);
   if (doc) {
     res.status(200).json({
       status: 'success',

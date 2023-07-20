@@ -165,7 +165,7 @@ const Navbar = () => {
             to="/"
           >
             <img
-              className="object-contain max-h-16"
+              className="object-contain max-h-12"
               src={mainLogo}
               alt="logo"
             />
