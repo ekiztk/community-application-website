@@ -26,8 +26,20 @@ exports.isCollaborator = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.createApplication = catchAsync(async (req, res, next) => {
+  const doc = await Application.create({
+    ...req.body,
+    collaborators: [req.user.id]
+  });
+  res.status(201).json({
+    status: 'success',
+    data: {
+      data: doc
+    }
+  });
+});
+
 exports.getAllApplications = factory.getAll(Application);
 exports.getApplication = factory.getOne(Application); //exports.getApplication = factory.getOne(Application, { path: 'responses' });
-exports.createApplication = factory.createOne(Application);
 exports.updateApplication = factory.updateOne(Application);
 exports.deleteApplication = factory.deleteOne(Application);

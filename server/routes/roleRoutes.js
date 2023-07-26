@@ -2,12 +2,13 @@ const express = require('express');
 const roleController = require('./../controllers/roleController');
 const authController = require('./../controllers/authController');
 
+const permER = 'editRoles';
+
 const router = express.Router();
-const permToPerform = 'editRoles';
 
 // Protect all routes after this middleware
 router.use(authController.protect);
-router.use(authController.restrictTo(permToPerform));
+router.use(authController.restrictTo(permER));
 
 router
   .route('/')

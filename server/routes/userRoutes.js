@@ -3,8 +3,9 @@ const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 const responseRouter = require('./responseRoutes');
 
+const permEU = 'editUser';
+
 const router = express.Router();
-const permToPerform = 'editUser';
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);

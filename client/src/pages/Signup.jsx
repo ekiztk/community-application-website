@@ -23,11 +23,11 @@ const registerSchema = yup.object().shape({
   password: yup
     .string()
     .required('Password is required!')
-    .min(8, 'Password must have at least 8 characters'),
+    .min(8, 'Password must have at least 8 characters!'),
   passwordConfirm: yup
     .string()
     .required('Password confirm is required!')
-    .oneOf([yup.ref('password')], 'Passwords does not match'),
+    .oneOf([yup.ref('password')], 'Passwords does not match!'),
 });
 
 const initialValuesRegister = {

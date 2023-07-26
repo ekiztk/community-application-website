@@ -21,6 +21,8 @@ import UserList from 'pages/dashboard/UserList';
 import UpdateProfile from 'pages/UpdateProfile';
 import MyResponses from 'pages/MyResponses';
 import PrivateRoute from 'components/PrivateRoute';
+import ForgotPassword from 'pages/ForgotPassword';
+import ResetPassword from 'pages/ResetPassword';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
   {
     path: '/auth/signup',
     element: <Signup />,
+  },
+  {
+    path: '/auth/forgotPassword',
+    element: <ForgotPassword />,
+  },
+  {
+    path: '/auth/resetPassword/:token',
+    element: <ResetPassword />,
   },
   {
     path: '/applications',

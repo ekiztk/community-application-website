@@ -79,6 +79,11 @@ const Navbar = () => {
         </>
       ) : (
         <>
+          <ListItem key="myResponses" disablePadding>
+            <ListItemButton component={Link} to="/profile/myResponses">
+              <ListItemText primary="My Responses" />
+            </ListItemButton>
+          </ListItem>
           <ListItem key="Profile" disablePadding>
             <ListItemButton component={Link} to={`/profile/update/${user?.id}`}>
               <ListItemIcon>

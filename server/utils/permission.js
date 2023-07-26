@@ -3,6 +3,10 @@ const PERMISSION_LIST = {
     label: 'Edit Application',
     description: 'Can create,edit,delete an application.'
   },
+  accessAllResponses: {
+    label: 'Access All Responses',
+    description: 'Can see all responses that are sent for the applications.'
+  },
   editUser: {
     label: 'Edit User',
     description: 'Can update, delete, and read a user.'

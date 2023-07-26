@@ -3,9 +3,9 @@ const applicationController = require('./../controllers/applicationController');
 const authController = require('./../controllers/authController');
 const responseRouter = require('./responseRoutes');
 
-const router = express.Router();
+const permEA = 'editApplication';
 
-const permToPerform = 'editApplication';
+const router = express.Router();
 
 //nested route to get all revelant responses
 router.use('/:applicationId/responses', responseRouter);
@@ -19,7 +19,7 @@ router
   .get(applicationController.getAllApplications)
   .post(
     authController.protect,
-    authController.restrictTo(permToPerform),
+    authController.restrictTo(permEA),
     applicationController.createApplication
   );
 
@@ -28,12 +28,12 @@ router
   .get(applicationController.getApplication)
   .patch(
     authController.protect,
-    authController.restrictTo(permToPerform),
+    authController.restrictTo(permEA),
     applicationController.updateApplication
   )
   .delete(
     authController.protect,
-    authController.restrictTo(permToPerform),
+    authController.restrictTo(permEA),
     applicationController.deleteApplication
   );
 

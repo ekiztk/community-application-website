@@ -21,7 +21,7 @@ export default function PrivateRoute({ requiredPermissions, children }) {
 
   if (
     requiredPermissions &&
-    !checkSubset(user.role.permissions, requiredPermissions)
+    !checkSubset(user?.role?.permissions, requiredPermissions)
   ) {
     return (
       <Navigate

@@ -18,7 +18,6 @@ const ApplicationResponses = () => {
   const application = location.state;
   const [isCollaborator, setIsCollaborator] = useState(false);
 
-  const userId = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
 
   const navigate = useNavigate();
@@ -138,7 +137,6 @@ const ApplicationResponses = () => {
           ]}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 30]}
           pagination
         />
       </Box>

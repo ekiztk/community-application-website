@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import de from 'date-fns/locale/de';
+import { toast } from 'react-toastify';
 
 const applicationSchema = yup.object().shape({
-  name: yup.string().required('required'),
-  description: yup.string().required('required'),
-  startDate: yup.date().required('required'),
-  deadlineDate: yup.date().required('required'),
+  name: yup.string().required('Required!'),
+  description: yup.string().required('Required!'),
+  startDate: yup.date().required('Required!'),
+  deadlineDate: yup.date().required('Required!'),
 });
 
 const initialValuesApplication = {
@@ -35,22 +36,35 @@ const CreateNewApplication = ({ data, close }) => {
   }));
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    console.log(values);
+    toast.loading('Please wait...', {
+      toastId: 'naMessage',
+    });
     dispatch(createApplication({ application: values, token }))
       .unwrap()
       .then((res) => {
-        alert('success');
+        toast.update('naMessage', {
+          render: 'The application has been created successfully.',
+          type: 'success',
+          isLoading: false,
+          autoClose: true,
+        });
+        close();
         //navigate(`/applications/edit/${idOfCreatedApplication}`);
       })
-      .catch((err) => {
-        alert(err.response.data);
+      .catch((error) => {
+        toast.update('naMessage', {
+          render: error?.response?.data?.message || error?.message,
+          type: 'error',
+          isLoading: false,
+          autoClose: true,
+        });
       });
   };
 
   return (
     <>
       <ModalHeader title="Create New Application" />
-      <Stack alignItems="center" spacing={4} direction="column" padding={2}>
+      <Stack alignItems="center" spacing={2} direction="column" padding={2}>
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValuesApplication}
@@ -119,7 +133,7 @@ const CreateNewApplication = ({ data, close }) => {
                   variant="contained"
                   color="primary"
                   type="submit"
-                  loading={isLoading}
+                  disabled={isLoading}
                 >
                   Create
                 </Button>

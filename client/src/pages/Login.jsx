@@ -144,7 +144,7 @@ const Login = () => {
                 />
                 <Box component="div" className="text-center">
                   <Link
-                    href="#"
+                    to="/auth/forgotPassword"
                     className="block mb-4 text-red-600 hover:text-red-700 focus:text-red-700 active:text-blue-800 duration-200 transition ease-in-out"
                   >
                     Forgot password?

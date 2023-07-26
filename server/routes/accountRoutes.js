@@ -4,6 +4,13 @@ const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
+router.use((req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is under build!'
+  });
+});
+
 // Protect all routes after this middleware
 router.use(authController.protect);
 
