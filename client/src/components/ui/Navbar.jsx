@@ -65,7 +65,11 @@ const Navbar = () => {
               {user?.name}
             </Link>
           </Button>
-
+          {user?.role?.name === 'master' && (
+            <Button color="inherit">
+              <Link to="/dashboard">Dashboard</Link>
+            </Button>
+          )}
           <Button
             className="px-2"
             startIcon={<LogoutIcon />}
@@ -101,6 +105,15 @@ const Navbar = () => {
               <ListItemText primary={user?.name} />
             </ListItemButton>
           </ListItem>
+
+          {user?.role?.name === 'master' && (
+            <ListItem key="dashboard" disablePadding>
+              <ListItemButton component={Link} to="/dashboard">
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+            </ListItem>
+          )}
+
           <ListItem key="logout" disablePadding>
             <ListItemButton
               component={Link}
@@ -204,7 +217,9 @@ const Navbar = () => {
           open={open}
         >
           <DrawerHeader>
-            <span className="flex-1 text-left">Deneme</span>
+            <span className="flex-1 text-left">
+              {import.meta.env.VITE_WEB_NAME}
+            </span>
             <IconButton onClick={() => setOpen(!open)}>
               <CloseIcon />
             </IconButton>

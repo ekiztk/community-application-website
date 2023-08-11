@@ -17,6 +17,7 @@ import { profileImage } from 'assets/img';
 import AppsIcon from '@mui/icons-material/Apps';
 import DvrIcon from '@mui/icons-material/Dvr';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   return (
@@ -32,6 +33,8 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const DashboardSidebar = () => {
+  const user = useSelector((state) => state.auth.user);
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState('Dashboard');
 
@@ -66,14 +69,13 @@ const DashboardSidebar = () => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                ml="15px"
               >
-                <Typography variant="h5">
-                  {import.meta.env.VITE_WEB_NAME}
-                </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
+                <Typography variant="h6">
+                  {import.meta.env.VITE_WEB_NAME}
+                </Typography>
               </Box>
             )}
           </MenuItem>
@@ -85,19 +87,25 @@ const DashboardSidebar = () => {
                   alt="profile-user"
                   width="64px"
                   height="64px"
-                  src={profileImage}
+                  src={
+                    user?.photo
+                      ? `${
+                          import.meta.env.VITE_BASE_API_URL
+                        }/assets/img/users/${user?.photo}`
+                      : profileImage
+                  }
                   style={{ cursor: 'pointer', borderRadius: '50%' }}
                 />
               </Box>
               <Box textAlign="center">
                 <Typography
-                  variant="h5"
+                  variant="h6"
                   fontWeight="bold"
                   sx={{ m: '10px 0 0 0' }}
                 >
-                  Deneme
+                  {user?.name}
                 </Typography>
-                <Typography variant="h6">Deneme</Typography>
+                <Typography variant="h7">{user?.role?.label}</Typography>
               </Box>
             </Box>
           )}
@@ -140,38 +148,16 @@ const DashboardSidebar = () => {
               Pages
             </Typography>
             <Item
+              title="Home"
+              to="/"
+              icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Applications"
               to="/applications"
               icon={<AppsIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="FAQ"
-              to="/workingInProgress"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="body1"
-              fontWeight={'bold'}
-              sx={{ m: '15px 0 5px 20px' }}
-            >
-              Stats
-            </Typography>
-            <Item
-              title="Bar Chart"
-              to="/workingInProgress"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pie Chart"
-              to="/workingInProgress"
-              icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />

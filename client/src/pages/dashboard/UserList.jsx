@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { createModal } from 'hooks/modal';
 import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
+import DashboardHeader from 'components/ui/dashboard/DashboardHeader';
 
 const UserList = () => {
   const [pageSize, setPageSize] = useState(5);
@@ -24,10 +25,8 @@ const UserList = () => {
 
   return (
     <Box>
-      <Typography variant="h3" component="h3" className="text-left">
-        User List
-      </Typography>
-      <Box className="overflow-x-auto" height="80vh">
+      <DashboardHeader title="User List" subtitle="deneme" />
+      <Box className="overflow-x-auto" height="75vh">
         <DataGrid
           rowSelection={false}
           loading={loading}

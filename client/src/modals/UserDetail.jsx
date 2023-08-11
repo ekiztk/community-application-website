@@ -4,8 +4,12 @@ import {
   TextField,
   Button,
   Stack,
+  FormControl,
   FormControlLabel,
   Switch,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -16,6 +20,9 @@ const UserDetail = ({ data, close }) => {
   const [sendingResponseError, setSendingResponseError] = useState(null);
 
   const [status, setStatus] = useState(data?.user?.active || false);
+  const [role, setRole] = useState(
+    data?.user?.role?.id || '63e6db2b3cc793754b5f78fc'
+  );
 
   const handleUpdateUser = async (status) => {
     try {
@@ -28,6 +35,7 @@ const UserDetail = ({ data, close }) => {
         `${import.meta.env.VITE_API_URL}/users/${data?.user?.id}`,
         {
           active: Boolean(status),
+          role,
         },
         { headers: { Authorization: `Bearer ${data?.token}` } }
       );
@@ -72,6 +80,20 @@ const UserDetail = ({ data, close }) => {
           value={data?.user?.email}
           readOnly
         />
+        <FormControl>
+          <InputLabel id="role-select-label">Role</InputLabel>
+          <Select
+            labelId="role-select-label"
+            id="role-select"
+            value={role}
+            label="Role"
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <MenuItem value="63e6db2b3cc793754b5f78fc">User</MenuItem>
+            <MenuItem value="64d59104b3f60ba42e44412b">Moderator</MenuItem>
+            <MenuItem value="63ee455ae7689766578698e4">Master</MenuItem>
+          </Select>
+        </FormControl>
 
         <FormControlLabel
           control={
