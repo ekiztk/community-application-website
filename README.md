@@ -1,8 +1,7 @@
 # INFO
-Live Frontend Link: https://community-application-website.vercel.app/ <br />
-Live Api Url: https://com-app-e0j3.onrender.com/api/v1/ <br />
+[Live Link](https://community-application-website-kbq0hl5oe-ekiztk.vercel.app/)
 
-Admin Account: <br />
+Log In Admin Account: <br />
 master@hotmail.com <br />
 123456789 <br />
 
